@@ -1,0 +1,89 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" class="layout-container">
+    <div class="flex-item" fxFlex="80%" fxFlexAlign="center center">
+        <ng-container *ngIf="success">
+            <section class="mat-typography">
+                <mat-card class="card-head">
+                    <mat-card-header>
+                        <mat-card-title class="mat-headline">Key Performance Indicators</mat-card-title>
+                    </mat-card-header>
+                </mat-card>
+                <mat-card class="card-body">
+                    <mat-card-content>
+                        <mat-list>
+                            <ng-container *ngFor="let device of lbdevices; let last=last;">
+                                <ng-container *ngIf="device.modules != 'ELB'">
+                                    <!--- dont include PKI for AWS ELB -->
+                                    <mat-list-item>
+                                        <mat-icon mat-list-icon color="primary">developer_board</mat-icon>
+                                        <h4 class="title" mat-line>{{device.hostname}}</h4>
+                                        <p class="item" mat-line>Modules: {{device.modules}}</p>
+                                        <p class="item" mat-line>State: {{device.DeviceState|isNull}}</p>
+                                    </mat-list-item>
+                                    <ng-container *ngIf="device.DeviceState != 'DOWN'">
+                                        <div [ngStyle]="{'min-height.px':size}">
+                                            <div class="flex-container" fxLayout="row" fxLayout.xs="column"
+                                                 fxLayoutAlign="center center">
+                                                <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center">
+                                                    CPU
+                                                    <mwl-gauge
+                                                            class="two"
+                                                            [gaugeClass]="'gauges'"
+                                                            [max]="100"
+                                                            [dialStartAngle]="180"
+                                                            [dialEndAngle]="0"
+                                                            [label]="percentageValue"
+                                                            [value]="device.STATISTIC_CPU_INFO_FIVE_SEC_AVG_USAGE_RATIO"
+                                                            [animated]="false"
+                                                            [animationDuration]="2">
+                                                    </mwl-gauge>
+                                                </div>
+                                                <!--[value]="device.STATISTIC_CPU_INFO_FIVE_SEC_AVG_USAGE_RATIO"-->
+                                                <div class="flex-item" fxFlex="20%" fxLayoutAlign="center center">
+                                                    Memory
+                                                    <mwl-gauge
+                                                            [gaugeClass]="'gauges'"
+                                                            [max]="100"
+                                                            [dialStartAngle]="-90"
+                                                            [dialEndAngle]="-90.001"
+                                                            [label]="percentageValue"
+                                                            [value]="device.STATISTIC_MEMORY_PERCENTAGE"
+                                                            [animated]="false"
+                                                            [animationDuration]="1">
+                                                    </mwl-gauge>
+                                                </div>
+                                                <!--[value]="device.STATISTIC_MEMORY_PERCENTAGE"-->
+                                                <!-- <div class="flex-item" fxFlex="30%" fxLayoutAlign="center center">
+                                                     <app-doughnut [labels]="['CPU', 'DEVICE']"
+                                                                   [width]="size"
+                                                                   [height]="size"
+                                                                   [data]="[device.STATISTIC_CPU_INFO_FIVE_SEC_AVG_USAGE_RATIO|isNull:33.3, 100]"
+                                                                   [legend]="true"
+                                                                   [color]="[{backgroundColor: ['rgba(93, 173, 226, 1.0)', 'rgba(166, 172, 175, 1.0)']}]">
+                                                     </app-doughnut>
+
+                                                 </div>
+                                                 <div class="flex-item" fxFlex="30%" fxLayoutAlign="center center">
+                                                     <app-doughnut [labels]="['TMM Memory', 'DEVICE']"
+                                                                   [width]="size"
+                                                                   [height]="size"
+                                                                   [data]="[device.STATISTIC_MEMORY_PERCENTAGE|isNull:90, 100]"
+                                                                   [legend]="true"
+                                                                   [color]="[{backgroundColor: ['rgba(88, 214, 141, 1.0)', 'rgba(166, 172, 175, 1.0)']}]">
+                                                     </app-doughnut>
+                                                 </div>-->
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="!last">
+                                            <mat-divider></mat-divider>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </section>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" [ngClass]="{'layout-container': !isDialog}">
+    <div class="flex-item" fxFlex="{{(isDialog)?('100%'):(size+'%')}}" fxFlexAlign="center center">
+        <section class="mat-typography">
+            <ng-template #defaultBodyTpl>
+                <span mat-line class="mat-title">Here should be your amazing code for layout body ;)</span>
+            </ng-template>
+            <ng-container
+                    *ngTemplateOutlet="bodyTpl ? bodyTpl: defaultBodyTpl">
+            </ng-container>
+        </section>
+    </div>
+</div>

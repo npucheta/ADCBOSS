@@ -1,0 +1,80 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+    <div class="flex-item" *ngIf="option=='list'">
+      <mat-list>
+          <mat-list-item *ngFor="let user of users | async">
+              <a [routerLink]="['/user', user.user]">{{user.user}}</a>
+          </mat-list-item>
+      </mat-list>
+      <div class="flex-item" fxFlex>
+          <div class="flex-item" fxFlex>
+              <button type="submit" mat-raised-button color="primary" (click)="show_form()">
+                Create User
+              </button>
+          </div>
+     </div>
+    </div>
+    <div class="flex-item" *ngIf="option=='create'">
+      <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+             fxLayoutGap="5%">
+      <div class="flex-item" fxFlex>
+          <div class="flex-item" fxFlex>
+              <button type="submit" mat-raised-button color="primary" (click)="create_user()">
+                Create
+              </button>
+          </div>
+     </div>
+
+        <form [formGroup]="form">
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="user" name="user" matInput type="text"
+                            placeholder="user" input [(ngModel)]="_user"
+                            formControlName="user">
+                  </mat-form-field>
+              </div>
+          </div>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="password" name="password" matInput type="text"
+                            placeholder="password" input [(ngModel)]="_password"
+                            formControlName="password">
+                  </mat-form-field>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+          <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="role" name="role" matInput type="text"
+                            placeholder="role" input [(ngModel)]="_role"
+                            formControlName="role">
+                  </mat-form-field>
+              </div>
+          </div>
+      </form>
+     </div>
+    </div>
+
+    </ng-template>
+  <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

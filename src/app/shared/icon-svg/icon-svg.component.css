@@ -1,0 +1,32 @@
+mat-icon.size-16 {
+  height: 16px;
+  width: 16px;
+  font-size: 16px;
+  line-height: 16px; }
+mat-icon.size-24 {
+  height: 24px;
+  width: 24px;
+  font-size: 24px;
+  line-height: 24px; }
+mat-icon.size-32 {
+  height: 32px;
+  width: 32px;
+  font-size: 32px;
+  line-height: 32px; }
+mat-icon.size-36 {
+  height: 36px;
+  width: 36px;
+  font-size: 36px;
+  line-height: 36px; }
+mat-icon.size-48 {
+  height: 48px;
+  width: 48px;
+  font-size: 48px;
+  line-height: 48px; }
+mat-icon.size-100 {
+  height: 100px;
+  width: 100px;
+  font-size: 100px;
+  line-height: 100px; }
+
+/*# sourceMappingURL=icon-svg.component.css.map */

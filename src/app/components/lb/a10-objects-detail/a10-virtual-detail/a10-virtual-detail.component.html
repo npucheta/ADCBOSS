@@ -1,0 +1,56 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardHeadButtonTpl>
+        <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Advanced Configuration"
+                matTooltipPosition="before">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </ng-template>
+
+    <ng-template #cardBodyTpl>
+        <ng-container *ngFor="let s of virtual| async">
+            <mat-toolbar color="warn">
+                <app-custom-table [title]="title" [type]="'head'"></app-custom-table>
+                <span class="item-spacer"></span>
+            </mat-toolbar>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <ng-container *ngFor="let key of objectKeys(s); let index=index">
+                        <ng-container *ngIf="index < 5 || !isDialog">
+                            <tr>
+                                <td class="active table-title">{{key}}</td>
+                                <td>{{s[key]}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </div>
+        </ng-container>
+                <mat-toolbar color="warn">
+                    <app-custom-table [title]="'Virtual Services'" [type]="'title'"></app-custom-table>
+                </mat-toolbar>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                         <ng-container *ngFor="let s of services| async">
+                           <tr>
+                            <td>
+                                <a [routerLink]="['/a10-virtual-service', s.a10url,s.hostname]">{{s.a10url|awsvspipe}}</a>
+                            </td>
+                         </tr>
+                        </ng-container>
+                    </table>
+                </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

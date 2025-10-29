@@ -1,0 +1,42 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <!--<ng-template #cardHeadButtonTpl>
+        <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Task Details"
+                matTooltipPosition="before">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </ng-template>-->
+
+    <ng-template #cardBodyTpl>
+        <ng-container *ngFor="let s of task| async">
+            <mat-toolbar color="warn">
+                <app-custom-table [title]="title" [type]="'head'"></app-custom-table>
+                <span class="item-spacer"></span>
+            </mat-toolbar>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <ng-container *ngFor="let key of objectKeys(s); let index=index">
+                            <tr>
+                                <td class="active table-title">{{key}}</td>
+                                <td *ngIf="key!='log_file'">{{s[key]}}</td>
+                                <div *ngIf="key=='log_file'"><a href="{{log_url}}">{{s[key]}}</a> </div>
+                            </tr>
+                    </ng-container>
+                </table>
+            </div>
+        </ng-container>
+
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

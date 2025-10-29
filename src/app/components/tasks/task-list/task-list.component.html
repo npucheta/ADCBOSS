@@ -1,0 +1,48 @@
+<!--Main template-->
+<ng-template #layout>
+    <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+         fxLayoutGap="2%">
+        <div class="flex-item" fxFlex="100%">
+            <mat-input-container class="input-full-width">
+                <input matInput placeholder="search" input [(ngModel)]="objectToSearch">
+            </mat-input-container>
+        </div>
+    </div>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+                <mat-list *ngFor="let task of tasks | async">
+                  <mat-list-item *ngIf="isSearchItem(task.id,objectToSearch)">
+                        <h4 mat-line><b>Task: {{task.id}} Type: {{task.type}} State: {{task.state}}  </b></h4>
+                            <button mat-icon-button
+                                    (click)="openDialog('task', task.id,'dummy')"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                      <!--  <p mat-line>IP: {{vs.ip|isNull}}:{{vs.port|isNull}}</p>
+                        <p mat-line><b>{{vs.vendor}}</b></p>
+                        <p mat-line><b>{{vs.hostname}}</b></p>
+                        <p mat-line>Status: {{vs.enabled_status|isNull}}</p>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('virtual', vs.virtual, vs.hostname,vs.vendor,vs.vs_type)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>-->
+                    </mat-list-item>
+                </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Task List'"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]=busy>
+    <app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+</ng-container>
+<!--<router-outlet></router-outlet>-->
+

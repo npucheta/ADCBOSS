@@ -1,0 +1,323 @@
+<!--TODO we know it's Ugly, but we do not know another way!-->
+<section class="mat-typography">
+    <!--Items-->
+    <mat-nav-list>
+        <mat-list>
+            <mat-list-item>
+                <a class="mat-button input-full-width" routerLinkActive="active" [tabindex]=0
+                   [matMenuTriggerFor]="lbobjectsMV">
+                    <span class="menu-vertical-item" mat-line>{{'Local Load Balancing (LB)'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width" routerLinkActive="active" [tabindex]=1
+                   [matMenuTriggerFor]="gslbobjectsMV">
+                    <span class="menu-vertical-item" mat-line>{{'Global Load Balancing (GSLB)'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width" routerLinkActive="active" [tabindex]=2
+                   [mat-menu-trigger-for]="devicesMV">
+                    <span class="menu-vertical-item" mat-line>{{'Devices'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   (click)="setTitle('Statistics')"
+                   [routerLink]="'stats'"
+                   routerLinkActive="active"
+                   [tabindex]=3>
+                    <span class="menu-vertical-item" mat-line>{{'Statistics'}}</span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   (click)="setTitle('Search')"
+                   [routerLink]="'search'"
+                   routerLinkActive="active"
+                   [tabindex]=4>
+                    <span class="menu-vertical-item" mat-line>{{'Search'}}</span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   (click)="setTitle('Export Data')"
+                   [routerLink]="'export'"
+                   routerLinkActive="active"
+                   [tabindex]=5>
+                    <span class="menu-vertical-item" mat-line>{{'Export Data'}}</span>
+                </a>
+            </mat-list-item>
+
+
+
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   routerLinkActive="active"
+                   [tabindex]=8
+                   [matMenuTriggerFor]="automationMV">
+                    <span class="menu-vertical-item" mat-line>{{'Automation'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   routerLinkActive="active"
+                   [tabindex]=7
+                   [matMenuTriggerFor]="tasks">
+                    <span class="menu-vertical-item" mat-line>{{'Tasks'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+            <mat-list-item>
+                <a class="mat-button input-full-width"
+                   routerLinkActive="active"
+                   [tabindex]=7
+                   [matMenuTriggerFor]="system">
+                    <span class="menu-vertical-item" mat-line>{{'System'}}<mat-icon>arrow_right</mat-icon></span>
+                </a>
+            </mat-list-item>
+        </mat-list>
+    </mat-nav-list>
+    <!--//-->
+
+    <!--Menus-->
+    <mat-menu #lbobjectsMV="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item
+           (click)="setTitle('Local Load Balancing (LB) | Virtuals')"
+           routerLinkActive="active"
+           [routerLink]="'lbobjects/virtuals'"><span mat-line class="mat-body">{{'Virtual Servers'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Local Load Balancing (LB) | Pools')"
+           routerLinkActive="active"
+           [routerLink]="'lbobjects/pools'"><span mat-line class="mat-body">{{'Pools'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Local Load Balancing (LB) | Nodes')"
+           routerLinkActive="active"
+           [routerLink]="'lbobjects/nodes'"><span mat-line class="mat-body">{{'Nodes'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Local Load Balancing (LB) | SSL Certificates')"
+           routerLinkActive="active"
+           [routerLink]="'lbobjects/certificates'"><span mat-line class="mat-body">{{'SSL Certificates'}}</span></a>
+   <!--     <a mat-menu-item
+           (click)="setTitle('Local Load Balancing (LB) | SSL Keys')"
+           routerLinkActive="active"
+           [routerLink]="'lbobjects/keys'"><span mat-line class="mat-body">{{'SSL Keys'}}</span></a>-->
+    </mat-menu>
+
+    <mat-menu #gslbobjectsMV="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item routerLinkActive="active"
+           (click)="setTitle('WideIPs | GSLB Virtuals')"
+           [routerLink]="'gslbobjects/wideips'"><span mat-line class="mat-body">{{'WideIPs (GSLB Virtual Servers)'}}</span></a>
+        <a mat-menu-item routerLinkActive="active"
+           (click)="setTitle('WideIPs | GSLB Pools')"
+           [routerLink]="'gslbobjects/pools'"><span mat-line class="mat-body">{{'GSLB Pools'}}</span></a>
+        <a mat-menu-item routerLinkActive="active"
+           (click)="setTitle('WideIPs | Datacenter')"
+           [routerLink]="'gslbobjects/datacenters'"><span mat-line class="mat-body">{{'Datacenters'}}</span></a>
+        <a mat-menu-item routerLinkActive="active"
+           (click)="setTitle('WideIPs | Servers')"
+           [routerLink]="'gslbobjects/servers'"><span mat-line class="mat-body">{{'Servers'}}</span></a>
+    </mat-menu>
+
+    <mat-menu #devicesMV="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Devices | List')"
+           [routerLink]="'devices/performance'">
+            <span mat-line class="mat-body">{{'Performance'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Devices | List')"
+           [routerLink]="'devices/list'">
+            <span mat-line class="mat-body">{{'List Devices'}}</span></a>
+        <a mat-menu-item
+            (click)="setTitle('Archives')"
+            [routerLink]="'archives'"
+            routerLinkActive="active">
+            <span class="menu-vertical-item" mat-line>{{'Archives'}}</span> </a>
+        <a mat-menu-item
+           (click)="setTitle('Devices')"
+           [matMenuTriggerFor]="listDevicesMV"
+           routerLinkActive="active">
+            <span mat-line class="mat-body">{{'Add Device'}}</span></a>
+    </mat-menu>
+
+    <mat-menu #listDevicesMV="matMenu" xPosition="after" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | F5')"
+           [routerLink]="'devices/add/f5'">
+            <span mat-line class="mat-body">{{'F5 BIG-IP'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | CITRIX Netscaler')"
+           [routerLink]="'devices/add/citrix-netscaler'">
+            <span mat-line class="mat-body">{{'CITRIX Netscaler'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | Radware Alteon')"
+           [routerLink]="'devices/add/radware-alteon'">
+            <span mat-line class="mat-body">{{'Radware Alteon'}}</span></a>
+         <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | A10')"
+           [routerLink]="'devices/add/a10'">
+            <span mat-line class="mat-body">{{'A10 Thunder'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | Cisco CSS')"
+           [routerLink]="'devices/add/cisco-css'">
+            <span mat-line class="mat-body">{{'Cisco CSS'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Device | AWS ELB')"
+           [routerLink]="'devices/add/aws-elb'">
+            <span mat-line class="mat-body">{{'AWS ELB'}}</span></a>
+    </mat-menu>
+
+    <mat-menu #tasks="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item
+           (click)="setTitle('List')"
+           routerLinkActive="active"
+           [routerLink]="'tasklist'"><span mat-line class="mat-body">{{'List Tasks'}}</span></a>
+    </mat-menu>
+
+      <mat-menu #system="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+        <a mat-menu-item
+           (click)="setTitle('Settings')"
+           routerLinkActive="active"
+           [routerLink]="'settings'"><span mat-line class="mat-body">{{'Settings'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Backups')"
+           routerLinkActive="active"
+           [routerLink]="'backups'"><span mat-line class="mat-body">{{'Backups'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Users')"
+           routerLinkActive="active"
+           [routerLink]="'users'"><span mat-line class="mat-body">{{'Users'}}</span></a>
+        <a mat-menu-item
+           (click)="setTitle('Support')"
+           routerLinkActive="active"
+           [routerLink]="'support'"><span mat-line class="mat-body">{{'Support'}}</span></a>
+
+       <a mat-menu-item
+           (click)="setTitle('Logs')"
+           routerLinkActive="active"
+           [routerLink]="'logs'"><span mat-line class="mat-body">{{'Logs'}}</span></a>
+    </mat-menu>
+
+    <mat-menu #automationMV="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+         <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('VS Creation')"
+           [routerLink]="'vscreation'">
+            <span mat-line class="mat-body">{{'VS Creation'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('LB Migration')"
+           [routerLink]="'lbmigration'">
+            <span mat-line class="mat-body">{{'LB Migration'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('Object Clean-UP')"
+           [routerLink]="'objectcleanup'">
+            <span mat-line class="mat-body">{{'Object Clean-UP'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('ARP Migration')"
+           [routerLink]="'arpmigration'">
+            <span mat-line class="mat-body">{{'ARP Migration'}}</span></a>
+        <a mat-menu-item
+           routerLinkActive="active"
+           (click)="setTitle('VIP Status Comparison')"
+           [routerLink]="'vipstatuscomparison'">
+           <span mat-line class="mat-body">{{'VIP Status Comparison'}}</span></a>
+    </mat-menu>
+    <!--//-->
+</section>
+
+<!--TODO implement after Angular Material support it!-->
+<!-- <mat-nav-list *ngFor="let item of items; let i = index">
+    <ng-template #one [ngIf]="!item.sub" [ngIfElse]="two">
+        <a class="mat-button"
+           [routerLink]="[item.path]"
+           routerLinkActive="active"
+           *ngIf="!item.sub; else two"
+           [tabindex]=i>
+            <span class="menu-vertical-item" mat-line>
+                 {{item.name}}
+            </span>
+        </a>
+    </ng-template>
+
+    <ng-container ngTemplateOutlet="hasSecondSub;context:ctx;"></ng-container>
+
+    <ng-template #two>
+        <a class="mat-button"
+           [routerLink]="[item.path]"
+           routerLinkActive="active"
+           [matMenuTriggerFor]="subOne"
+           [tabindex]=i>
+                <span class="menu-vertical-item" mat-line>
+                     {{item.name}} >
+                </span>
+        </a>
+
+        <mat-menu #subOne="matMenu">
+            <a mat-menu-item *ngFor="let subI of item.sub" [matMenuTriggerFor]="subTwo">{{i}}-{{subI.name}} >></a>
+            <a mat-menu-item [matMenuTriggerFor]="subTwo">{{i}}-A >></a>
+            <a mat-menu-item [matMenuTriggerFor]="subTwo">{{i}}-B >></a>
+            <a mat-menu-item [matMenuTriggerFor]="subTwo">{{i}}-C >></a>
+        </mat-menu>
+    </ng-template>
+</mat-nav-list>-->
+<!--//-->
+
+<!--<mat-nav-list *ngFor="let item of items; let i = index" class="menu-vertical">
+    <mat-list>
+        <section class="mat-typography">
+            <mat-list-item class="mat-button"
+                          mat-button
+                          #rootMenu
+                          [routerLink]="[item.path]"
+                          routerLinkActive="active"
+                          (click)="toggleMe(start);title=item.name"
+                          [tabindex]=i
+                          *ngIf="!item.children; else hasChild">
+                            <span class="menu-vertical-item" mat-line>
+                                 {{item.name}}
+                            </span>
+            </mat-list-item>
+        </section>
+
+        <ng-template #hasChild>
+            <mat-menu #subMenu="matMenu" xPosition="before" yPosition="below" class="submenu-vertical">
+                <ng-container *ngFor="let child of item.children">
+                    <section class="mat-typography">
+                        <a mat-menu-item
+                           [routerLink]="[(child.path)?(child.path):(item.path), ('' == child.slug)?(''):(child.slug)]"
+                           routerLinkActive="active"
+                           (click)="toggleMe(start);title=child.name+ ' | ' +item.name">
+                            <span mat-line class="mat-body">{{child.name}}</span>
+                        </a>
+                    </section>
+                </ng-container>
+            </mat-menu>
+            <section class="mat-typography">
+
+                <mat-list-item class="mat-button"
+                              [matMenuTriggerFor]="subMenu"
+                              [tabindex]=i
+                              routerLinkActive="active">
+                    <span class="menu-vertical-item" mat-line>{{item.name}}<mat-icon>arrow_right</mat-icon></span>
+                </mat-list-item>
+            </section>
+        </ng-template>
+
+    </mat-list>
+</mat-nav-list>-->

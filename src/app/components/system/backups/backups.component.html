@@ -1,0 +1,41 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+    <div class="flex-item" fxFlex>
+          <div class="flex-item" fxFlex>
+              <button type="submit" mat-raised-button color="primary" (click)="create()">
+                Create
+              </button>
+          </div>
+    </div>
+
+    <input type="file" (change)="upload($event)" placeholder="Upload backup" accept=".tar.gz">
+    <!--    
+        <div class="flex-item" fxFlex>
+          <div class="flex-item" fxFlex>
+              <button type="submit" mat-raised-button color="primary" (click)="upload()">
+                Upload
+              </button>
+          </div>
+    </div>-->
+    <div class="flex-item">
+      <mat-list>
+          <mat-list-item *ngFor="let backup of backups | async">
+              <a [routerLink]="['/backup', backup]">{{backup}}</a>
+          </mat-list-item>
+      </mat-list>
+    </div>
+    </ng-template>
+  <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

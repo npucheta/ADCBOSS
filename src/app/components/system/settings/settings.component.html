@@ -1,0 +1,88 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" class="layout-container">
+    <div class="flex-item" fxFlex="80%" fxFlexAlign="center center">
+        <section class="mat-typography">
+            <mat-card class="card-head">
+                <mat-card-header>
+                    <mat-card-title>
+                        <span class="mat-body" mat-line>{{'Settings'|uppercase}}</span>
+                    </mat-card-title>
+                </mat-card-header>
+            </mat-card>
+            <mat-card class="card-body">
+                <mat-card-content>
+                    <div fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-checkbox color="primary">Refresh statistics
+                                automatically
+                            </mat-checkbox>
+                        </div>
+                        <div class="flex-item">
+                            <mat-form-field class="input-full-width">
+                                <input matInput type="number" placeholder="Refresh statistics every (300)">
+                                <mat-hint align="end">seconds</mat-hint>
+                                <!--<span mat-suffix>seconds</span>-->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-checkbox color="primary">Refresh configuration
+                                automatically
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-form-field class="input-full-width">
+                                <input matInput type="number" placeholder="Refresh configuration every">
+                                <mat-hint align="end">hours</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-form-field class="input-full-width">
+                                <input matInput type="number" placeholder="Run Task scheduler every">
+                                <mat-hint align="end">minutes</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-form-field class="input-full-width">
+                                <input matInput type="number" placeholder="Create ADCBoss Backup every">
+                                <mat-hint align="end">day(s)</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+                         fxLayoutAlign.xs="center">
+                        <div class="flex-item">
+                            <mat-form-field class="input-full-width">
+                                <input matInput type="number" placeholder="Create devices archives every">
+                                <mat-hint align="end">day(s)</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center"
+                         fxLayoutAlign.xs="center" fxLayoutGap="10px">
+                        <div class="flex-item">
+                            <button type="submit" mat-raised-button color="primary">Save</button>
+                        </div>
+                        <div class="flex-item">
+                            <button type="reset" mat-raised-button color="accent">Reset</button>
+                        </div>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+        </section>
+    </div>
+</div>

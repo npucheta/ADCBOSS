@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ADCBoss</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/FortAwesome/Font-Awesome/master/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+</head>
+<body>
+<script>
+    // TODO this is temp
+    (function () {
+        if ('registerElement' in document
+            && 'import' in document.createElement('link')
+            && 'content' in document.createElement('template')) {
+            // platform is good!
+        } else {
+            // polyfill the platform!
+            const e = document.createElement('script');
+            e.src = 'assets/libs/webcomponents/webcomponents-lite.js';
+            // e.src = 'https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.14/webcomponents-lite.js';
+            document.body.appendChild(e);
+        }
+    })();
+</script>
+<app-adcboss>Loading...</app-adcboss>
+<div class="footer-container">
+    <footer>
+        <div class="text-center">Austral Tech Ltd Copyright(&copy;) <a href='http://www.australtech.net/'
+                                                                       target="PRODUCT_LINK"><b
+                style="text-decoration-line: underline">Austral Tech Ltd</b></a> All rights reserved.
+        </div>
+    </footer>
+</div>
+</body>
+</html>

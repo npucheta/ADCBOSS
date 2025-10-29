@@ -1,0 +1,39 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardHeadButtonTpl>
+        <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Advanced Configuration"
+                matTooltipPosition="before">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </ng-template>
+
+    <ng-template #cardBodyTpl>
+        <ng-container *ngFor="let i of irule | async">
+            <mat-list>
+                <mat-list-item>
+                    <h4 mat-line>Hostname: {{i.hostname}}</h4>
+                    <p mat-line>iRule name: {{i.irule_name}}</p>
+                </mat-list-item>
+            </mat-list>
+            <mat-divider></mat-divider>
+            <ng-container *ngIf="i.irule_definition">
+                <div class="code">
+                    <p mat-line>IRule code</p>
+                    <pre [innerHTML]="i.irule_definition | safe:'html'"></pre>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

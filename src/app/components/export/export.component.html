@@ -1,0 +1,34 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div class="flex-item" fxFlex="35%" align="start">
+            <mat-form-field>
+                <mat-select class="input-full-width" placeholder="Device to export" [(ngModel)]="deviceName">
+                    <mat-option *ngFor="let device of devices" [value]="device.realvalue">
+                        {{device.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item" fxFlex>
+            <button mat-mini-fab color="warn" (click)="dump(deviceName)" matTooltip="Export ('deviceName')"
+                    [disabled]="(!deviceName)">
+                <mat-icon>file_download</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Export'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

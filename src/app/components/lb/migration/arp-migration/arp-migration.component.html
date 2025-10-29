@@ -1,0 +1,50 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-container [ngBusy]=busy>
+        <ng-template #cardBodyTpl>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                 fxLayoutAlign="space-around end" fxLayoutGap="10px">
+                <div class="flex-item" fxFlex="30%" align="start">
+                    <mat-form-field>
+                        <mat-select placeholder="Please select device (Hostname)"
+                                    [(ngModel)]="targetdevice_for_ARP"
+                                    name="target_device">
+                            <div *ngFor="let targetDevice of lbdevices | async">
+                                <mat-option [value]="targetDevice.hostname">
+                                    <span class="mat-body">{{targetDevice.hostname}}</span>
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex-item" fxFlex="70%" align="start">
+                    <!--<mat-radio-group [(ngModel)]="arp_value">
+                        <mat-radio-button color="primary" value="enable_arp">Enable ARP</mat-radio-button>
+                        <mat-radio-button color="primary" value="disable_arp">Disabled ARP</mat-radio-button>
+                    </mat-radio-group>-->
+                </div>
+            </div>
+            <!-- <input name="options" ng-control="options" type="radio" [value]="disable_arp" [(ngModel)]="arp_value" >Disabled ARP<br/> -->
+        </ng-template>
+        <ng-template #cardActionTpl>
+            <div class="flex-item" fxFlex>
+                <button mat-mini-fab color="warn" (click)="arpModification()"
+                        matTooltip="Perform ARP Modification">
+                    <mat-icon>compare_arrows</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+    </ng-container>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'ARP Management (Enable/Disable)'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

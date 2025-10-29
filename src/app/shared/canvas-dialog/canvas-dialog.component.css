@@ -1,0 +1,19 @@
+#chart-container {
+    /*display: inline !important;*/
+    min-width: 400px !important;
+    min-height: 400px !important;
+    border: hidden;
+    margin: 0;
+    padding: 0;
+    /*background-color: #EEEEEE;*/
+    overflow: auto !important;
+}
+
+.devices-sidenav {
+    width: 80%;
+}
+
+
+:host ::ng-deep .orgchart .node { width: auto; min-width: 200px;} 
+:host ::ng-deep .orgchart .node .title { width: auto; height: 20px; position: relative;} 
+:host ::ng-deep .orgchart .node .content { width: auto; height: 40px; line-height: 3; }

@@ -1,0 +1,8 @@
+<ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="'head'">
+        <span mat-line class="mat-subheading-2">{{title|uppercase}}</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'title'">
+        <span class="mat-subheading-1">{{title|uppercase}}</span>
+    </ng-container>
+</ng-container>

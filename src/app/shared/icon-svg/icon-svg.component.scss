@@ -1,0 +1,27 @@
+@mixin mat-icon-size($size: 24px) {
+  height: $size;
+  width: $size;
+  font-size: $size;
+  line-height: $size;
+}
+
+mat-icon {
+  &.size-16 {
+    @include mat-icon-size(16px);
+  }
+  &.size-24 {
+    @include mat-icon-size(24px);
+  }
+  &.size-32 {
+    @include mat-icon-size(32px);
+  }
+  &.size-36 {
+    @include mat-icon-size(36px);
+  }
+  &.size-48 {
+    @include mat-icon-size(48px);
+  }
+  &.size-100 {
+    @include mat-icon-size(100px);
+  }
+}

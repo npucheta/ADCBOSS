@@ -1,0 +1,121 @@
+<!--Main template-->
+<ng-template #layout>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+    <a mat-icon-button (click)="prev()"
+    matTooltip="Previous"
+    matTooltipPosition="before">
+    <mat-icon>fast_rewind</mat-icon>
+    </a>
+    <a mat-icon-button (click)="next()"
+    matTooltip="Next"
+    matTooltipPosition="after">
+    <mat-icon>fast_forward</mat-icon>
+    </a>
+    <ng-template #cardBodyTpl>
+        <mat-list>
+            <div [ngSwitch]="objectSelected">
+                <div *ngSwitchCase="'wideips'">
+                    <mat-list *ngFor="let w of wideips | async">
+                            <h4 mat-line><b>{{w.wideip|common}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('wideip', w.wideip)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'irules'">
+                    <mat-list *ngFor="let i of irules | async">
+                            <h4 mat-line><b>{{i.irule_name}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('gslbirule', i.irule_name)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'pools'">
+                    <mat-list *ngFor="let p of pools | async">
+                            <h4 mat-line><b>{{p.pool|common}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('gslbpool', p.pool)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'datacenters'">
+                    <mat-list *ngFor="let d of datacenters | async">
+                            <h4 mat-line><b>{{d.datacenter|common}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('datacenter', d.datacenter)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'servers'">
+                    <mat-list *ngFor="let s of servers | async">
+                            <h4 mat-line><b>{{s.server|common }}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('server', s.server)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'monitors'">
+                    <mat-list *ngFor="let m of monitors | async">
+                            <h4 mat-line><b>{{m.monitor_name|common:true}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('gslbmonitor', m.monitor_name)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+                <div *ngSwitchCase="'topologies'">
+                    <mat-list *ngFor="let t of topologies | async">
+                            <h4 mat-line><b>{{t.topology }}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('topology', t.topology)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+            </div>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'GSLB objects ('+title+')'"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]=busy>
+    <app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+</ng-container>

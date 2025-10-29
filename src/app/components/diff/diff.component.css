@@ -1,0 +1,14 @@
+.diff-layout-container{
+    padding-top:7%;
+}
+
+.button {
+    width: 50%;
+    height: 50%;
+}
+
+.fixed{
+    position: fixed !important;
+    bottom: 80%;
+    right: 80%;
+}

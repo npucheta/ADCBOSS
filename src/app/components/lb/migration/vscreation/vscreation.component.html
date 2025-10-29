@@ -1,0 +1,122 @@
+
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+             fxLayoutGap="5%">
+        <form [formGroup]="form">
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="virtualname" name="virtualname" matInput type="text"
+                            placeholder="virtualname" input [(ngModel)]="_virtualname"
+                            formControlName="virtualname">
+                  </mat-form-field>
+              </div>
+          </div>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="ip" name="ip" matInput type="text"
+                            placeholder="ip" input [(ngModel)]="_ip"
+                            formControlName="ip">
+                  </mat-form-field>
+              </div>
+          </div>
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+          <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="port" name="port" matInput type="text"
+                            placeholder="port" input [(ngModel)]="_port"
+                            formControlName="port">
+                  </mat-form-field>
+              </div>
+          </div>
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+          <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="netmask" name="netmask" matInput type="text"
+                            placeholder="netmask" input [(ngModel)]="_netmask"
+                            formControlName="netmask">
+                  </mat-form-field>
+              </div>
+          </div>
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="pool_member1" name="pool_member1" matInput type="text"
+                            placeholder="pool_member1" input [(ngModel)]="_pool_member1"
+                            formControlName="pool_member1">
+                  </mat-form-field>
+              </div>
+          </div>
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+              fxLayoutAlign="space-around start" fxLayoutGap="10px">
+
+              <div class="flex-item" fxFlex="80%">
+                  <mat-form-field class="input-full-width">
+                      <input id="pool_member2" name="pool_member2" matInput type="text"
+                            placeholder="pool_member2" input [(ngModel)]="_pool_member2"
+                            formControlName="pool_member2">
+                  </mat-form-field>
+              </div>
+          </div>
+      </form>
+     </div>
+
+    </ng-template>
+    <ng-template #cardActionTpl>
+            <div class="flex-item" fxFlex="50%" align="start">
+                <mat-form-field>
+                    <mat-select class="input-full-width" placeholder="Service Type" [(ngModel)]="_servicetype">
+                        <div *ngFor="let servicetype of SERVICETYPES">
+                            <mat-option [value]="servicetype">
+                                {{servicetype}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+             <div class="flex-item" fxFlex="50%" align="start">
+                <mat-form-field>
+                    <mat-select class="input-full-width" placeholder="Target Device" [(ngModel)]="_device">
+                        <div *ngFor="let device of devices | async">
+                            <mat-option [value]="device">
+                                {{device.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        <div class="flex-item" fxFlex>
+                <div class="flex-item" fxFlex>
+                    <button type="submit" mat-raised-button color="primary" (click)="submit()">
+                      Submit
+                    </button>
+                </div>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Virtual Server Creation'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+

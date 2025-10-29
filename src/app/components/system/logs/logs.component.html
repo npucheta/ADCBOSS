@@ -1,0 +1,24 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+    <div class="flex-item">
+      <mat-list>
+          <mat-list-item *ngFor="let log of logs | async">
+              <a href="{{logsurl}}{{log}}">{{log}}</a>
+          </mat-list-item>
+      </mat-list>
+    </div>
+    </ng-template>
+  <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

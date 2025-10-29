@@ -1,0 +1,175 @@
+<mat-form-field>
+    <mat-select class="input-full-width" placeholder="Select profile type" [(ngModel)]="profileSelected"
+                name="menuProfileLB"
+                (change)="changeOption()">
+        <mat-option *ngFor="let option of options" [value]="option.name">
+            <div *ngIf="1 == option.status">
+                {{option.value}}
+            </div>
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
+<!--<mat-card>-->
+<!--<mat-card-content>-->
+<mat-list>
+    <ng-container [ngBusy]="busy" [ngSwitch]="profileSelected">
+        <ng-container *ngSwitchCase="'httpprofiles'">
+            <mat-list *ngFor="let p of httpprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('httpprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'tcpprofiles'">
+            <mat-list *ngFor="let p of tcpprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('tcpprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'udpprofiles'">
+            <mat-list *ngFor="let p of udpprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('udpprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'fastl4profiles'">
+            <mat-list *ngFor="let p of fastL4profiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('fastl4profiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'persistenceprofiles'">
+            <mat-list *ngFor="let p of persistenceprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('persistenceprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'oneconnectprofiles'">
+            <mat-list *ngFor="let p of oneconnectprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('oneconnectprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'streamprofiles'">
+            <mat-list *ngFor="let p of streamprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('streamprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'clientsslprofiles'">
+            <mat-list *ngFor="let p of clientSSLprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('clientsslprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'serversslprofiles'">
+            <mat-list *ngFor="let p of serverSSLprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('serversslprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'ftppprofiles'">
+            <mat-list *ngFor="let p of ftpprofiles | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('ftppprofiles', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchCase="'httpclasses'">
+            <mat-list *ngFor="let p of httpclasses | async">
+                <mat-list-item *ngIf="isSearchItem(p.profile,objectToSearch)">
+                    <h4 mat-line><b>{{p.profile }}</b></h4>
+                    <p mat-line>{{p.hostname}}</p>
+                    <p mat-line>
+                        <button mat-icon-button (click)="openDialog('httpclasses', p.profile,p.hostname)"
+                                matTooltip="Details">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                    </p>
+                </mat-list-item>
+            </mat-list>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <h3>Select a option</h3>
+        </ng-container>
+    </ng-container>
+</mat-list>
