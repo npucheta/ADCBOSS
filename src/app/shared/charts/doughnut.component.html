@@ -1,0 +1,10 @@
+<div class="flex-item" [ngStyle]="{'width.px':width, 'height.px':height}">
+    <canvas baseChart [width]="width" [height]="height"
+            [data]="data"
+            [labels]="labels"
+            [legend]="legend"
+            [colors]="color"
+            [options]="{responsive: true}"
+            [chartType]="TYPE">
+    </canvas>
+</div>

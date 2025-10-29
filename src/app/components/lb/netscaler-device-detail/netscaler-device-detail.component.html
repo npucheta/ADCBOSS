@@ -1,0 +1,248 @@
+<mat-toolbar color="warm">
+    <mat-toolbar-row>
+        <button mat-icon-button [matMenuTriggerFor]="menuDevicesLB">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+        <mat-menu #menuDevicesLB="matMenu">
+            <div *ngFor="let option of options">
+                <div *ngIf="1 == option.status">
+                    <a mat-menu-item (click)="changeOption(option.name,false)">{{option.value}}</a>
+                </div>
+            </div>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" class="device-detail-layout-container">
+    <div class="flex-item" fxFlex="95%" fxFlexAlign="center center">
+        <span class="item-spacer"></span>
+        <mat-card>
+            <mat-card-content>
+                <mat-list>
+                    <div [ngBusy]="busy" [ngSwitch]="objectSelected">
+                        <div *ngSwitchCase="'virtuals'">
+                            <h3 mat-subheader>Virtuals </h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let v of virtuals | async">
+                            <h4 mat-line><b>{{v.name}}</b></h4>
+                            <p mat-line>{{v.hostname | lowercase}}</p>
+                             <p mat-line>IP: {{v.ipv46|isNull}}:{{v.port|isNull}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('virtuals', v.name,v.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'csvirtuals'">
+                            <h3 mat-subheader>CS Virtuals </h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let v of csvirtuals | async">
+                                    <h4 mat-line><b>{{v.name}}</b></h4>
+                                    <p mat-line>{{v.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('csvirtuals', v.name,v.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'crvirtuals'">
+                            <h3 mat-subheader>CR Virtuals </h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let v of crvirtuals | async">
+                                    <h4 mat-line><b>{{v.name}}</b></h4>
+                                    <p mat-line>{{v.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('crvirtuals', v.name,v.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'servicegroups'">
+                            <h3 mat-subheader>Service Groups</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of servicegroups | async">
+                                    <h4 mat-line><b>{{s.servicegroupname}}</b></h4>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('servicegroups', s.servicegroupname, s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'services'">
+                            <h3 mat-subheader>Services</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of services | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.name}}</b></h4>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('services', s.name,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'persistencegroups'">
+                            <h3 mat-subheader>Persistence Groups</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let p of persistencegroups | async">
+                                <!--<div *ngIf="isSearchItem(m.monitor_name,objectToSearch)">-->
+                                <!--<p mat-line><a [routerLink]="['/monitor', m.monitor_name,m.hostname]">{{m.monitor_name}}</a></p>-->
+                                    <h4 mat-line><b>{{p.name}}</b></h4>
+                                    <p mat-line>{{p.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button
+                                                (click)="openDialog('persistencegroups', p.name, p.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                      <div *ngSwitchCase="'nodes'">
+                            <h3 mat-subheader>Servers</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of servers | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.name}}</b></h4>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('nodes', s.name,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                      <div *ngSwitchCase="'monitors'">
+                            <h3 mat-subheader>Monitors</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of monitors | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.monitorname}}</b></h4>
+                                    <p mat-line>{{s.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('monitors', s.monitorname,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+                        <div *ngSwitchCase="'csactions'">
+                            <h3 mat-subheader>csactions</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of csactions | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.name}}</b></h4>
+                                    <p mat-line>{{s.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('csactions', s.name,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+                        <div *ngSwitchCase="'cspolicies'">
+                            <h3 mat-subheader>cspolicies</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of cspolicies | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.policyname}}</b></h4>
+                                    <p mat-line>{{s.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('cspolicies', s.policyname,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+                        <div *ngSwitchCase="'crpolicies'">
+                            <h3 mat-subheader>crpolicies</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of crpolicies | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.policyname}}</b></h4>
+                                    <p mat-line>{{s.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('crpolicies', s.policyname,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+                        
+                        
+
+                        <div *ngSwitchCase="'profiles'">
+                            <app-netscaler-profile-detail [device]="device"></app-netscaler-profile-detail>
+                        </div>
+
+
+                        <div *ngSwitchCase="'device'">
+                            <div *ngIf="null != device">
+                                <h3 mat-subheader>Device details</h3>
+                                <mat-divider></mat-divider>
+                                <mat-list-item *ngIf="device.hostname">
+                                    <p mat-line>Hostname: <b>{{device.hostname}}</b></p>
+                                    <p mat-line>MGMT IP: <b>{{device.ip}}</b></p>
+                                    <p mat-line>Version: <b>{{device.version}}</b></p>
+                                    <p mat-line>Get configuration: <b>{{device.get_configuration}}</b></p>
+                                    <p mat-line>Configuration status: <b>{{device.config_status}}</b></p>
+                                    <p mat-line>Migration source: <b>{{device.is_source_for_migration}}</b></p>
+                                    <p mat-line>Migration target: <b>{{device.is_target_for_migration}}</b></p>
+                                </mat-list-item>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchDefault>
+                            <h3>Select a option</h3>
+                        </div>
+                    </div>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+        <br/><br/><br/>
+    </div>
+</div>
+<!--</div>
+</mat-card-content>
+</mat-card>
+</div>
+</div>-->

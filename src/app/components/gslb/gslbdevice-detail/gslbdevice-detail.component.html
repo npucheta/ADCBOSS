@@ -1,0 +1,147 @@
+<mat-toolbar color="warm">
+    <mat-toolbar-row>
+        <button mat-icon-button [matMenuTriggerFor]="menuDevicesGSLB">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+        <mat-menu #menuDevicesGSLB="matMenu">
+            <div *ngFor="let option of options">
+                <div *ngIf="1 == option.status">
+                    <a mat-menu-item
+                       (click)="changeOption(option.name)">
+                        {{option.value}}
+                    </a>
+                </div>
+            </div>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <mat-list>
+            <ng-container [ngSwitch]="objectSelected">
+                <ng-container *ngSwitchCase="'wideIPs'">
+                    <mat-list *ngFor="let w of wideips | async">
+                            <!--<p mat-line><a [routerLink]="['/wideip', w.wideip]">{{w.wideip}}</a></p>-->
+                            <h4 mat-line><b>{{w.wideip|common}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('wideip', w.wideip,w.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'iRules'">
+                    <mat-list *ngFor="let i of irules | async">
+                            <h4 mat-line><b>{{i.irule_name }}</b></h4>
+                            <p mat-line>{{i.hostname | lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('gslbirule', i.irule_name,i.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'gslbpools'">
+                    <mat-list *ngFor="let p of pools | async">
+                            <h4 mat-line><b>{{p.pool|common}}</b></h4>
+                            <p mat-line>{{p.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('gslbpool', p.pool,p.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'datacenters'">
+                    <mat-list *ngFor="let d of datacenters | async">
+                            <h4 mat-line><b>{{d.datacenter|common}}</b></h4>
+                            <p mat-line>{{d.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('datacenter', d.datacenter,d.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'servers'">
+                    <mat-list *ngFor="let s of servers | async">
+                            <h4 mat-line><b>{{s.server|common}}</b></h4>
+                            <p mat-line>{{s.hostname }}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('server', s.server,s.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+                <ng-container *ngSwitchCase="'monitors'">
+                    <mat-list *ngFor="let m of monitors | async">
+                            <h4 mat-line><b>{{m.monitor_name|common:true}}</b></h4>
+                            <p mat-line>{{m.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('gslbmonitor', m.monitor_name,m.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+                <ng-container *ngSwitchCase="'topology'">
+                    <mat-list *ngFor="let t of topologies | async">
+                            <h4 mat-line><b>{{t.topology }}</b></h4>
+                            <p mat-line>{{t.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('topology', t.topology,t.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <h3>Select a option</h3>
+                </ng-container>
+            </ng-container>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]=busy>
+    <app-custom-layout [bodyTpl]="layout" [size]="95"></app-custom-layout>
+</ng-container>

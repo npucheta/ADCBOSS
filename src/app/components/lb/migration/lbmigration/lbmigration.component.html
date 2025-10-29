@@ -1,0 +1,75 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center center"
+             fxLayoutGap="10px" style="margin-bottom: 3%">
+            <div class="flex-item" fxFlex="50%" align="start">
+                <mat-form-field>
+                    <mat-select class="input-full-width" placeholder="Please select source devices (Hostname)" [(ngModel)]="sourcedevice">
+                        <div *ngFor="let device of lbdevices | async;">
+                            <!--<div>{{counter = i}}</div>-->
+                            <mat-option *ngIf="show_sources(device)" [value]="device">
+                                {{device.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-item" fxFlex="50%" align="start">
+                <mat-form-field>
+                    <mat-select class="input-full-width" placeholder="Please select target device (Hostname)" [(ngModel)]="targetdevice">
+                        <div *ngFor="let device of lbdevices | async">
+                            <mat-option *ngIf="show_targets(device)" [value]="device">
+                                {{device.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <ng-container *ngIf="sourcedevice">
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="start center"
+                 fxLayoutGap="10px">
+                <div class="flex-item" fxFlex="50%">
+                    <span class="mat-subheading-1" mat-line>Source Device:</span>
+                    <ul>
+                        <li>
+                            <span class="mat-small" mat-line>{{sourcedevice.hostname}} ({{sourcedevice.vendor}})</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div *ngIf="targetdevice">
+                <div class="flex-item" fxFlex="50%">
+                    <span class="mat-subheading-1" mat-line>Target Device:</span>
+                    <ul>
+                        <li>
+                            <span class="mat-small" mat-line>{{targetdevice.hostname}} ({{targetdevice.vendor}})</span>
+                        </li>
+                    </ul>
+                </div>
+          </div>
+        </ng-container>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item" fxFlex>
+            <button mat-mini-fab color="warn" (click)="migrateConfiguration()"
+                    matTooltip="Migrate Configuration">
+                <mat-icon>compare_arrows</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'LB migrations'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

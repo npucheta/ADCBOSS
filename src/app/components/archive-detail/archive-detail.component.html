@@ -1,0 +1,100 @@
+<mat-sidenav-container>
+    <mat-sidenav #sNavDiff class="compare-sidenav" align="center">
+        <app-diff [archive1]="archive1" [sideNav]="sNavDiff"
+                  [file_for_comparison_in_archive1]="file_for_comparison_in_archive1"
+                  [archive2]="archive2"
+                  [file_for_comparison_in_archive2]="file_for_comparison_in_archive2"
+                  [deviceService]="deviceService">
+        </app-diff>
+    </mat-sidenav>
+
+    <!--Main template-->
+    <ng-template #layout>
+        <!--card actions-->
+        <ng-template #cardBodyListTpl>
+            <ng-container *ngFor="let archive of archives | async">
+                <a href="http://australtech.ddns.net/rest/LB/{{archiveLocation}}/Archives/{{archive}}">{{archive}}</a>
+            </ng-container>
+        </ng-template>
+
+        <ng-template #cardBodyCompareTpl>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="flex-item" fxFlex="50%">
+                    <mat-form-field>
+                        <mat-select placeholder="Please select archive 1" [(ngModel)]="archive1" name="archive1"
+                                    (change)="getFilesInArchive1()">
+                            <div *ngFor="let archive of archives | async">
+                                <mat-option [value]="archive">
+                                    {{archive}}
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex-item" fxFlex="50%">
+                    <mat-form-field>
+                        <mat-select placeholder="Please select archive 2" [(ngModel)]="archive2" name="archive2"
+                                    (change)="getFilesInArchive2()">
+                            <div *ngFor="let archive of archives | async">
+                                <mat-option [value]="archive">
+                                    {{archive}}
+                                </mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="flex-item" fxFlex="50%">
+                    <p>Archive 1:</p>
+                    {{archive1}}
+                    <p mat-line appHighlight class='link'
+                       *ngFor="let file of files_in_archive_1 | async; let i = index"
+                       (click)="markFileForComparisonInArchive1(file, i)"
+                       [class.highlight]="i == selectedFile1">{{file}}</p>
+                </div>
+                <div class="flex-item" fxFlex="50%">
+                    <p>Archive 2:</p>
+                    {{archive2}}
+                    <p mat-line appHighlight class='link'
+                       *ngFor="let file of files_in_archive_2 | async; let i = index"
+                       (click)="markFileForComparisonInArchive2(file, i)"
+                       [class.highlight]="i == selectedFile2">{{file}}
+                    </p>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #cardActionCompareTpl>
+            <div class="flex-item" fxFlex>
+                <button mat-mini-fab color="warn" (click)="compareArchives(sNavDiff)"
+                        matTooltip="Compare Archives"
+                        [disabled]="!selected1 || !selected2">
+                    <mat-icon>compare_arrows</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+        <!--//-->
+        <!--here display card -->
+        <ng-container *ngIf="'list' == action">
+            <app-custom-card [title]="'Archives for device: '+device"
+                             [bodyTpl]="cardBodyListTpl">
+            </app-custom-card>
+        </ng-container>
+        <ng-container *ngIf="'compare' == action">
+            <app-custom-card [title]="'Compare archives for device: '+device"
+                             [bodyTpl]="cardBodyCompareTpl"
+                             [hasAction]="true"
+                             [actionTpl]="cardActionCompareTpl">
+            </app-custom-card>
+        </ng-container>
+        <!--//-->
+    </ng-template>
+
+    <!--Here display all content of main layout-->
+    <ng-container [ngBusy]=busy>
+        <app-custom-layout [bodyTpl]="layout" [size]="95"></app-custom-layout>
+    </ng-container>
+
+</mat-sidenav-container>
+<!--<pre>{{configfile}}</pre>-->

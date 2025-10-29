@@ -1,0 +1,78 @@
+<ng-container *ngIf="!isLoggedIn()">
+    <div class="login-container"
+         fxLayout="row"
+         fxLayout.xs="column"
+         fxLayoutAlign="center stretch"
+         fxLayoutAlign.xs="center center">
+        <!-- <div fxFlex="30%"></div>-->
+        <div class="flex-item" fxFlex="50%" fxFlexAlign="center center">
+            <mat-card class="text-center" style="padding: 0; margin: 0;">
+                <mat-toolbar color="warm">
+                    <div class="flex-item" fxFlex>
+                        <h2 class="text-center">ADCBOSS</h2>
+                    </div>
+                </mat-toolbar>
+            </mat-card>
+            <form [formGroup]="form" (ngSubmit)="sign()">
+                <mat-card>
+                    <mat-card-content>
+                        <!--<form (ngSubmit)="login(loginForm)" #loginForm="ngForm">-->
+                        <div class="flex-container"
+                             fxLayout="column"
+                             fxLayout.xs="column"
+                             fxLayoutAlign="center center"
+                             fxLayoutAlign.xs="center center">
+                            <!--<div class="flex-item" fxFlex>
+                                <h2 class="text-center">ADCBOSS</h2>
+                            </div>-->
+                            <div class="flex-item" fxFlex>
+                                <mat-input-container class="input-full-width">
+                                    <input type="text" matInput id="username" formControlName="username" name="username"
+                                           placeholder="Username" autocomplete="off">
+                                    <mat-hint class="error"
+                                             *ngIf="!form.controls['username'].valid && form.controls['username'].touched">
+                                        <span *ngIf="form.controls['username'].errors['required']"> the username is required</span>
+                                        <span *ngIf="form.controls['username'].errors['minlength']"> the username must be less {{MIN_LENGTH_USERNAME}} characters</span>
+                                    </mat-hint>
+                                    <!--<input type="text" id="username" formControlName="username" ngModel name="username" matInput
+                                           placeholder="Username" #username="ngModel" minlength="5" required autocomplete="false">-->
+                                    <!--<mat-hint class="error" *ngIf="username.touched && username.errors">
+                                        <span *ngIf="username.errors.required"> the username is required</span>
+                                        <span *ngIf="username.errors.minlength"> the username must be less 5 characters</span>
+                                    </mat-hint>-->
+                                </mat-input-container>
+                            </div>
+                            <div class="flex-item" fxFlex>
+                                <mat-input-container class="input-full-width">
+                                    <input matInput type="password" id="password" formControlName="password"
+                                           name="password" placeholder="Password" autocomplete="off">
+                                    <mat-hint class="error"
+                                             *ngIf="!form.controls['password'].valid && form.controls['password'].touched">
+                                        <span *ngIf="form.controls['password'].errors['required']"> the password is required</span>
+                                        <span *ngIf="form.controls['password'].errors['minlength']"> the password must be less {{MIN_LENGTH_PASSWORD}} characters</span>
+                                    </mat-hint>
+                                    <!--<input type="password" id="password" formControlName="password" ngModel name="password" matInput
+                                           placeholder="Password" #password="ngModel" minlength="8" required autocomplete="false">
+                                    <mat-hint class="error" *ngIf="password.touched && password.errors">
+                                        <span *ngIf="password.errors.required"> the password is required</span>
+                                        <span *ngIf="password.errors.minlength"> the password must be less 8     characters</span>
+                                    </mat-hint>-->
+                                </mat-input-container>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center"
+                             fxLayoutAlign.xs="center">
+                            <div class="flex-item" fxFlex>
+                                <button type="submit" mat-raised-button color="primary" [disabled]="!form.valid">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+        </div>
+    </div>
+</ng-container>

@@ -1,0 +1,11 @@
+.i-rule-detail-layout-container {
+    padding-top: 5%;
+}
+.pre {
+    white-space: pre;
+}
+
+.code {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}

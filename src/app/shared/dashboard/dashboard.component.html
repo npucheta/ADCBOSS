@@ -1,0 +1,44 @@
+<ng-container *ngIf="isLoggedIn()">
+    <mat-toolbar class="dashboard">
+        <!--<mat-toolbar-row>-->
+        <button mat-icon-button #closeStartButton (click)="toggleMe(start)">
+            <mat-icon>{{icon}}</mat-icon>
+        </button>
+        <section class="mat-typography">
+            <span class="mat-headline"> {{title}} | ADCBOSS</span>
+        </section>
+        <span class="item-spacer"></span>
+        <div [hidden]="isHome()">
+            <button mat-icon-button style="margin-right: 0" [routerLink]="['/']" (click)="title='Home'; icon='menu'">
+                <mat-icon>home</mat-icon>
+            </button>
+        </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>face</mat-icon>
+        </button>
+        <section class="mat-typography">
+            <mat-menu class="menu" #menu="matMenu" xPosition="before" yPosition="below">
+                <mat-toolbar class="profile-toolbar">
+                    <span class="profile-title mat-small">{{username}}</span>
+                </mat-toolbar>
+                <button mat-menu-item [matMenuTriggerFor]="settMenu"><span class="mat-small">Profile</span></button>
+
+                <button mat-menu-item (click)="logout()">
+                    <!--<mat-icon color="primary">arrow_forward</mat-icon>-->
+                    <span class="mat-small">Logout</span>
+                </button>
+            </mat-menu>
+            <mat-menu #settMenu="matMenu" xPosition="before" yPosition="below">
+                <button mat-menu-item><span class="mat-small">Account</span></button>
+                <button mat-menu-item><span class="mat-small">Security</span></button>
+            </mat-menu>
+        </section>
+        <!--</mat-toolbar-row>-->
+    </mat-toolbar>
+    <mat-sidenav-container (backdropClick)="toggleMe(start)">
+        <mat-sidenav #start mode="push" (open)="closeStartButton.focus()">
+            <app-vertical-menu (title)="setTitle($event)"></app-vertical-menu>
+        </mat-sidenav>
+        <router-outlet></router-outlet>
+    </mat-sidenav-container>
+</ng-container>

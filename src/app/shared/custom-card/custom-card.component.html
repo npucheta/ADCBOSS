@@ -1,0 +1,50 @@
+<!--card title-->
+<mat-card class="card-head">
+    <mat-card-header>
+        <mat-card-title>
+            <span class="mat-body" mat-line>{{title|uppercase}}</span>
+        </mat-card-title>
+    </mat-card-header>
+    <ng-template [ngIf]="hasButton">
+        <div class="flex-item" fxFlex style="text-align: end; vertical-align: bottom;">
+            <ng-template #defaultHeadBtnTpl>
+                <button mat-icon-button>
+                    <mat-icon>texture</mat-icon>
+                </button>
+            </ng-template>
+            <ng-container
+                    *ngTemplateOutlet="headButtonTpl ? headButtonTpl: defaultHeadBtnTpl">
+            </ng-container>
+        </div>
+    </ng-template>
+</mat-card>
+<!--//-->
+<!--card body-->
+<mat-card [ngClass]="{'card-body':(!hasButton)}">
+    <mat-card-content>
+        <ng-template #defaultBodyTpl>
+            <p>Here should be your amazing code for card body ;)</p>
+        </ng-template>
+        <ng-container
+                *ngTemplateOutlet="bodyTpl ? bodyTpl: defaultBodyTpl">
+        </ng-container>
+    </mat-card-content>
+    <!--card actions-->
+    <ng-template [ngIf]="hasAction">
+        <mat-card-actions style="text-align: end; vertical-align: bottom;">
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                 fxLayoutAlign="space-around end" fxLayoutGap="10px">
+                <ng-template #defaultActionTpl>
+                    <div class="flex-item" fxFlex>
+                        <p>Here should be your amazing code for card actions ;)</p>
+                    </div>
+                </ng-template>
+                <ng-container
+                        *ngTemplateOutlet="actionTpl ? actionTpl: defaultActionTpl">
+                </ng-container>
+            </div>
+        </mat-card-actions>
+    </ng-template>
+    <!--//-->
+</mat-card>
+<!--//-->

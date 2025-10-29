@@ -1,0 +1,41 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+             fxLayoutAlign="start end" fxLayoutGap="10px">
+            <div class="flex-item" fxFlex="30%" align="start">
+                <mat-form-field>
+                    <mat-select placeholder="Please select device (Hostname)"
+                                [(ngModel)]="targetdevice_for_cleanup"
+                                name="target_device">
+                        <div *ngFor="let targetDevice of lbdevices | async">
+                            <mat-option [value]="targetDevice.hostname">
+                                <span class="mat-body"></span>{{targetDevice.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item" fxFlex>
+            <button mat-mini-fab color="warn" (click)="objectCleanUP()"
+                    matTooltip="Perform ARP Modification">
+                <mat-icon>compare_arrows</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Object Clean-UP (Removal)'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

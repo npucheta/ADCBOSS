@@ -1,0 +1,58 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <mat-form-field class="input-full-width">
+            <input matInput type="text" name="contextSize"
+                   placeholder="Context size (optional): The number of lines of context to show around differences; by default, all lines are shown"
+                   input [(ngModel)]="contextSize">
+        </mat-form-field>
+
+        <h2>Configuration File 1</h2>
+        <mat-form-field class="input-full-width">
+                    <textarea matInput mat-autosize matAutosizeMinRows="5" id="baseText"
+                              placeholder="{{archive1}}{{file_for_comparison_in_archive1}}">{{configfile1}}</textarea>
+        </mat-form-field>
+
+        <h2>Configuration File 2</h2>
+        <mat-form-field class="input-full-width">
+                    <textarea matInput mat-autosize matAutosizeMinRows="5" id="newText"
+                              placeholder="{{archive2}}{{file_for_comparison_in_archive2}}">{{configfile2}}</textarea>
+        </mat-form-field>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item">
+            <button type="submit" mat-raised-button color="primary" (click)="diffUsingJS(0)">
+                Compare files
+            </button>
+        </div>
+        <div class="flex-item">
+            <button mat-raised-button color="accent" (click)="closeSideNav()">
+                Return
+            </button>
+        </div>
+    </ng-template>
+
+    <ng-template #cardDiffTpl>
+        <div class="table-responsive">
+            <div id="diffoutput" #diffoutput></div>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Diff archives'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+
+    <div [hidden]="!isDiff">
+        <app-custom-card [title]="'Diff'"
+                         [bodyTpl]="cardDiffTpl">
+        </app-custom-card>
+    </div>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [size]="95"></app-custom-layout>

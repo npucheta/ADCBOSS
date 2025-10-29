@@ -1,0 +1,55 @@
+<mat-sidenav-container class="archives-container">
+    <mat-sidenav #sNavArchiveDetail class="archives-list-sidenav" align="end">
+        <!--<app-device [device]="device" (click)="_deviceDetailLB.reset(false)"></app-device>-->
+        <div *ngIf="selectedDevice">
+            <app-archive-detail [device]="selectedDevice" [action]="archiveAction"></app-archive-detail>
+        </div>
+    </mat-sidenav>
+    <div class="archives-sidenav-content">
+        <!--Main template-->
+        <ng-template #layout>
+            <!--card actions-->
+            <ng-template #cardBodyTpl>
+                <mat-list>
+                    <mat-list-item *ngFor="let device of lbdevices | async">
+                        <mat-icon mat-list-icon>folder</mat-icon>
+                        <h4 mat-line><b>{{device.hostname}}</b></h4>
+                        <h4 mat-line><b>{{device.modules}}</b></h4>
+                        <p mat-line>
+                            <button mat-icon-button matTooltip="Archives"
+                                    (click)="openArchives(device, sNavArchiveDetail)">
+                                <mat-icon>list</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Compare Archives"
+                                    (click)="compareArchives(device, sNavArchiveDetail)">
+                                <mat-icon>compare_arrows</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Generate Archive now"
+                                    (click)="generateArchive(device)">
+                                <mat-icon>cloud_download</mat-icon>
+                            </button>
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+            </ng-template>
+            <ng-template #cardActionTpl>
+                <div class="flex-item" fxFlex>
+
+                </div>
+            </ng-template>
+            <!--//-->
+            <!--here display card -->
+            <app-custom-card [title]="'Archives LB devices'"
+                             [bodyTpl]="cardBodyTpl"
+                             [hasAction]="true"
+                             [actionTpl]="cardActionTpl">
+            </app-custom-card>
+            <!--//-->
+        </ng-template>
+
+        <!--Here display all content of main layout-->
+        <ng-container [ngBusy]=busy>
+            <app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+        </ng-container>
+    </div>
+</mat-sidenav-container>

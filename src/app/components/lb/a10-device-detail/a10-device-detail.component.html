@@ -1,0 +1,131 @@
+<mat-toolbar color="warm">
+    <mat-toolbar-row>
+        <button mat-icon-button [matMenuTriggerFor]="menuDevicesLB">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+        <mat-menu #menuDevicesLB="matMenu">
+            <div *ngFor="let option of options">
+                <div *ngIf="1 == option.status">
+                    <a mat-menu-item (click)="changeOption(option.name)">{{option.value}}</a>
+                </div>
+            </div>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+         <span class="item-spacer"></span>
+        <mat-list>
+            <ng-container [ngSwitch]="objectSelected">
+                <ng-container *ngSwitchCase="'virtuals'">
+                    <mat-list *ngFor="let vs of virtuals | async">
+                            <h4 mat-line><b>{{vs.name}}</b></h4>
+                            <h4 mat-line><b>{{vs.ipaddress}}</b></h4>
+                            <p mat-line>{{vs.enabledisableaction | lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('virtuals', vs.name, vs.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                 <ng-container *ngSwitchCase="'virtualservices'">
+                    <mat-list *ngFor="let v of virtualservices | async">
+                            <h4 mat-line><b>{{v.a10url|awsvspipe}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('virtualservices', v.a10url, v.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'profiles'">
+                    <app-profile-detail [device]="device"></app-profile-detail>
+                </ng-container>
+
+
+                <ng-container *ngSwitchCase="'servicegroups'">
+                    <mat-list *ngFor="let p of servicegroups | async">
+                            <h4 mat-line><b>{{p.name}}</b></h4>
+                            <p mat-line>{{p.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('servicegroups', p.name, p.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'servers'">
+                    <mat-list *ngFor="let n of servers | async">
+                            <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                            <h4 mat-line><b>{{n.name}}</b></h4>
+                            <h4 mat-line><b>{{n.host}}</b></h4>
+                            <p mat-line>{{n.hostname}}</p>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('servers', n.host,n.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'device'">
+                    <div *ngIf="null != device">
+                        <mat-list-item *ngIf="device.hostname">
+                            <p mat-line>Hostname: <b>{{device.hostname}}</b></p>
+                            <p mat-line>MGMT IP: <b>{{device.ip}}</b></p>
+                            <p mat-line>Version: <b>{{device.version}}</b></p>
+                            <p mat-line>Get configuration: <b>{{device.get_configuration}}</b></p>
+                            <p mat-line>Configuration status: <b>{{device.config_status}}</b></p>
+                            <p mat-line>Migration source: <b>{{device.is_source_for_migration}}</b></p>
+                            <p mat-line>Migration target: <b>{{device.is_target_for_migration}}</b></p>
+                        </mat-list-item>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                    <h3>Select a option</h3>
+                </ng-container>
+            </ng-container>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]=busy>
+    <app-custom-layout [bodyTpl]="layout" [size]="95"></app-custom-layout>
+</ng-container>

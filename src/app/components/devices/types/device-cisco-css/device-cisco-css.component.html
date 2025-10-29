@@ -1,0 +1,85 @@
+<form [formGroup]="form">
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+         fxLayoutAlign="space-around start" fxLayoutGap="10px">
+        <!--<div class="flex-item" fxFlex="20%">
+            <mat-form-field>
+                <mat-select id="deviceType" name="deviceType" class="input-full-width"
+                            placeholder="Device Type"
+                            [(ngModel)]="deviceType" formControlName="deviceTypes">
+                    <mat-option *ngFor="let device of deviceTypes"
+                                [value]="device.realvalue">
+                        <span class="mat-body">{{device.value}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>-->
+        <app-icon-svg [icon]="deviceType" [size]="48"></app-icon-svg>
+
+        <div class="flex-item" fxFlex="80%">
+            <mat-form-field class="input-full-width">
+                <input id="deviceName" name="devicename" matInput type="text"
+                       placeholder="Device name" input [(ngModel)]="devicename"
+                       formControlName="deviceName">
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+         fxLayoutAlign="space-around center" fxLayoutGap="10px">
+
+        <div class="flex-item" fxFlex>
+            <mat-form-field class="input-full-width">
+                <input id="ip" name="ipaddress" matInput placeholder="IP Address" input
+                       [(ngModel)]="ipaddress" formControlName="ip">
+            </mat-form-field>
+        </div>
+
+        <div class="flex-item" fxFlex="25%">
+            <mat-checkbox id="getConfiguration" name="getConfiguration" color="primary"
+                         [(ngModel)]="getConfiguration"
+                         formControlName="getConfiguration">
+                Get Configuration
+            </mat-checkbox>
+        </div>
+
+        <div class="flex-item" fxFlex="25%">
+            <mat-checkbox id="isLB" name="isLB" color="primary" [(ngModel)]="isLB"
+                         formControlName="isLB">
+                LB/LTM Module
+            </mat-checkbox>
+        </div>
+
+        <div class="flex-item" fxFlex="25%">
+            <mat-checkbox id="isGSLB" name="isGSLB" color="primary" [(ngModel)]="isGSLB"
+                         formControlName="isGSLB">
+                GSLB/GTM Module
+            </mat-checkbox>
+        </div>
+
+    </div>
+    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+         fxLayoutAlign="space-around end" fxLayoutGap="10px">
+        <div class="flex-item" fxFlex="50%">
+            <mat-form-field class="input-full-width">
+                <input id="username" name="username" matInput
+                       placeholder="Administrator Username" input
+                       [(ngModel)]="username" formControlName="username">
+            </mat-form-field>
+        </div>
+
+        <div class="flex-item" fxFlex="50%">
+            <mat-form-field class="input-full-width">
+                <input id="password" name="password" matInput
+                       placeholder="Administrator Password" input
+                       [(ngModel)]="password" formControlName="password">
+            </mat-form-field>
+        </div>
+        <div class="flex-item" fxFlex="50%">
+            <mat-form-field class="input-full-width">
+                <input id="dataCenter" name="datacenter" matInput
+                       placeholder="Datacenter"
+                       input
+                       [(ngModel)]="datacenter" formControlName="dataCenter">
+            </mat-form-field>
+        </div>
+    </div>
+</form>

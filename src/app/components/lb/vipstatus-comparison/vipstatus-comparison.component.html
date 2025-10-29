@@ -1,0 +1,135 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="flex-item" fxFlex="50%">
+                <mat-form-field>
+                    <mat-select placeholder="Please select source devices (Hostname)" [(ngModel)]="sourcedevice"
+                                name="source_devices" (change)="AddDeviceAsSource()">
+                        <div *ngFor="let device of lbdevices | async;">
+                            <!--<div>{{counter = i}}</div>-->
+                            <mat-option *ngIf="device.hostname!=targetdevice" [value]="device.hostname">
+                                {{device.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="flex-item" fxFlex="50%">
+                <mat-form-field>
+                    <mat-select placeholder="Please select target device (Hostname)" [(ngModel)]="targetdevice"
+                                name="target_device">
+                        <div *ngFor="let device of lbdevices | async">
+                            <!--<div>{{counter = i}}</div>-->
+                            <mat-option *ngIf="device.hostname!=sourcedevice" [value]="device.hostname">
+                                {{device.hostname}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="flex-item" fxFlex="50%">
+                <div *ngIf="sourcedevice != ''">
+                    <p>Source Devices:</p>
+                    <ul>
+                        {{sourcedevice}}
+                    </ul>
+                </div>
+            </div>
+            <div class="flex-item" fxFlex="50%">
+                <div *ngIf="targetdevice != ''">
+                    <p>Target Device:</p>
+                    <ul>
+                        <li>
+                            {{targetdevice}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item" fxFlex>
+            <button mat-mini-fab color="warn" (click)="MigrateConfiguration()"
+                    matTooltip="Compare Virtual Servers">
+                <mat-icon>compare_arrows</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'VIP Status Comparison'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+
+    <!--Output-->
+    <ng-container *ngIf="virtuals">
+        <mat-card [ngStyle]="{'margin-bottom': (!isDialog)?'5%':0}">
+            <mat-card-header>
+                <mat-card-title>VIP Comparison Output</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngFor="let v of virtuals | async; let last = last">
+                    <mat-toolbar color="warn">
+                        <app-custom-table [title]="v.reason" [type]="'title'"></app-custom-table>
+                        <span class="item-spacer"></span>
+                    </mat-toolbar>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <td class="active table-title">Reason</td>
+                                <td>{{v.reason}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Hostnames</td>
+                                <td>{{v.hostnames}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Virtuals</td>
+                                <td>{{v.virtuals}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Ips</td>
+                                <td>{{v.ips}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Protocols</td>
+                                <td>{{v.protocols}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Source_target</td>
+                                <td>{{v.source_target}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Description</td>
+                                <td>{{v.description}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Availability</td>
+                                <td><span [innerHTML]="v.availability | status"></span></td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Enabled_disabled</td>
+                                <td>{{v.enabled_disabled}}</td>
+                            </tr>
+                            <tr>
+                                <td class="active table-title">Description_status</td>
+                                <td>{{v.description_status}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

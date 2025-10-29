@@ -1,0 +1,30 @@
+ <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" class="layout-container">
+    <div class="flex-item" fxFlex="80%" fxFlexAlign="center center">
+
+  <ng-container *ngFor="let s of userdetails| async">
+            <mat-toolbar color="warn">
+                <app-custom-table [title]="title" [type]="'head'"></app-custom-table>
+                <span class="item-spacer"></span>
+            </mat-toolbar>
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <ng-container *ngFor="let key of objectKeys(s); let index=index">
+                        <ng-container *ngIf="index < 5 || !isDialog">
+                            <tr>
+                                <td class="active table-title">{{key}}</td>
+                                <td>{{s[key]}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center"
+              fxLayoutAlign.xs="center" fxLayoutGap="10px">
+              <div class="flex-item">
+                  <button type="reset" mat-raised-button color="accent" (click)="delete()">Delete</button>
+              </div>
+           </div>
+        </ng-container>
+    </div>
+</div>

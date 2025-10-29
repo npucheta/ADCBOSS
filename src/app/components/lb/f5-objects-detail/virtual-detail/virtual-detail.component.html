@@ -1,0 +1,127 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card-->
+    <ng-template #cardHeadButtonTpl>
+        <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Advanced Configuration"
+                matTooltipPosition="before">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </ng-template>
+
+    <ng-template #cardBodyTpl>
+        <ng-container *ngFor="let v of virtual | async">
+            <mat-toolbar color="warn">
+                <app-custom-table [title]="v.hostname" [type]="'head'"></app-custom-table>
+                <span class="item-spacer"></span>
+                <a mat-icon-button (click)="appMapping(v.ip,v.port)" matTooltip="Application Mapping"
+                   matTooltipPosition="before">
+                    <mat-icon>insert_chart</mat-icon>
+                </a>
+            </mat-toolbar>
+             <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <ng-container *ngFor="let key of objectKeys(v); let index=index">
+                        <ng-container *ngIf="index < 5 || !isDialog">
+                            <tr>
+                                <td class="active table-title">{{key}}</td>
+                                <td>{{v[key]}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </div>
+            <ng-container *ngIf="v.pool">
+                <mat-toolbar color="warn">
+                    <app-custom-table [title]="'Pool'" [type]="'title'"></app-custom-table>
+                </mat-toolbar>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <tr>
+                            <td><a [routerLink]="['/pool', v.pool,v.hostname]">{{v.pool|common}}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!isDialog">
+             <mat-toolbar color="warn">
+                    <app-custom-table [title]="'Profiles'" [type]="'title'"></app-custom-table>
+                </mat-toolbar>
+                <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                        <tr *ngFor="let p of httpprofile | async">
+                            <td class="active table-title">HTTP Profile</td>
+                            <td>
+                                <a [routerLink]="['/httpprofile', p.profile,p.hostname]">{{p.profile|common}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of tcpprofile | async">
+                            <td class="active table-title">TCP Profile</td>
+                            <td>
+                                <a [routerLink]="['/tcpprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of udpprofile | async">
+                            <td class="active table-title">UDP Profile</td>
+                            <td>
+                                <a [routerLink]="['/udpprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of fastl4profile | async">
+                            <td class="active table-title">FastL4 Profile</td>
+                            <td>
+                                <a [routerLink]="['/fastl4profile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of clientsslprofile | async">
+                            <td class="active table-title">ClientSSL Profile</td>
+                            <td>
+                                <a [routerLink]="['/clientsslprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of serversslprofile | async">
+                            <td class="active table-title">ServerSSL Profile</td>
+                            <td>
+                                <a [routerLink]="['/serversslprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of oneconnectprofile | async">
+                            <td class="active table-title">ServerSSL Profile</td>
+                            <td>
+                                <a [routerLink]="['/oneconnectprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of streamprofile | async">
+                            <td class="active table-title">Stream Profile</td>
+                            <td>
+                                <a [routerLink]="['/streamprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of ftpprofile | async">
+                            <td class="active table-title">FTP Profile</td>
+                            <td>
+                                <a [routerLink]="['/ftpprofile', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let p of httpclass | async">
+                            <td class="active table-title">HTTPClass</td>
+                            <td>
+                                <a [routerLink]="['/httpclass', p.profile,p.hostname]">{{p.profile}}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>

@@ -1,0 +1,198 @@
+<!--Main template-->
+<ng-template #layout>
+    <mat-toolbar color="warm">
+        <mat-toolbar-row>
+            <button mat-icon-button [matMenuTriggerFor]="menuDevicesLB">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+            <mat-menu #menuDevicesLB="matMenu">
+                <div *ngFor="let option of options">
+                    <div *ngIf="1 == option.status">
+                        <button mat-menu-item (click)="changeOption(option.name)">{{option.value}}</button>
+                    </div>
+                </div>
+            </mat-menu>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <!--card actions-->
+    <ng-template #cardHeadButtonTpl>
+        <button md-icon-button [mat-dialog-close]="true" (click)="goSelf()" mdTooltip="Advanced Configuration"
+                mdTooltipPosition="before">
+            <md-icon>fullscreen</md-icon>
+        </button>
+    </ng-template>
+
+    <ng-template #cardBodyTpl>
+         <span class="item-spacer"></span>
+        <mat-list>
+            <ng-container [ngSwitch]="objectSelected">
+                <div *ngSwitchCase="'loadbalancers'">
+                    <h3 mat-subheader>Load Balancers</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let lb of loadbalancers | async">
+                            <h4 mat-line><b>{{lb.LoadBalancerName|common}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('loadbalancers', lb.LoadBalancerName, lb.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'listeners'">
+                    <h3 mat-subheader>Listeners</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let l of listeners | async">
+                            <h4 mat-line><b>{{l.ListenerArn}}</b></h4>
+                            <p mat-line>{{l.LoadBalancerArn | lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('listeners', l.ListenerArn,l.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'zones'">
+                    <h3 mat-subheader>Availability Zones</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let z of zones | async">
+                            <h4 mat-line><b>{{z.ZoneName}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('zones', z.ZoneName, z.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'rules'">
+                    <h3 mat-subheader>Rules</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let r of rules | async">
+                            <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                            <h4 mat-line><b>{{r.RuleArn}}</b></h4>
+                            <p mat-line>
+                                <button mat-icon-button (click)="openDialog('rules', r.RuleArn,r.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'actions'">
+                    <h3 mat-subheader>Actions</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let a of actions | async">
+                        <!--<p mat-line><a [routerLink]="['/monitor', m.monitor_name,m.hostname]">{{m.monitor_name}}</a></p>-->
+                            <h4 mat-line><b>{{a.Type}}</b></h4>
+                            <p mat-line>{{a.TargetGroupArn | lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('actions', a.TargetGroupArn, a.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'targetgroups'">
+                    <h3 mat-subheader>Target Groups</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let t of targetgroups | async">
+                            <h4 mat-line><b>{{t.TargetGroupName}}</b></h4>
+                            <p mat-line>{{t.TargetGroupArn | lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('targetgroups', t.TargetGroupArn,t.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+                <div *ngSwitchCase="'targets'">
+                    <h3 mat-subheader>Targets</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let t of targets | async">
+                            <h4 mat-line><b>{{t.TargetGroup}}</b></h4>
+                            <p mat-line>{{t.TargetGroup| lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('targets', t.Id,t.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+
+                <div *ngSwitchCase="'sslpolicies'">
+                    <h3 mat-subheader>SSL Policies</h3>
+                    <mat-divider></mat-divider>
+                    <mat-list *ngFor="let s of sslpolicies | async">
+                            <h4 mat-line><b>{{s.Name}}</b></h4>
+                            <p mat-line>{{s.Name| lowercase}}</p>
+                            <p mat-line>
+                                <button mat-icon-button
+                                        (click)="openDialog('sslpolicies', s.Name,s.hostname)"
+                                        matTooltip="Details">
+                                    <mat-icon>remove_red_eye</mat-icon>
+                                </button>
+                            </p>
+                    </mat-list>
+                </div>
+
+
+                <ng-container *ngSwitchCase="'device'">
+                    <div *ngIf="null != device">
+                        <mat-list-item *ngIf="device.hostname">
+                            <p mat-line>API KEY: <b>{{device.hostname}}</b></p>
+                        </mat-list-item>
+                    </div>
+                </ng-container>
+
+                <div *ngSwitchDefault>
+                    <h3>Select a option</h3>
+                </div>
+            </ng-container>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="''"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]="busy">
+    <app-custom-layout [bodyTpl]="layout" [size]="95"></app-custom-layout>
+</ng-container>

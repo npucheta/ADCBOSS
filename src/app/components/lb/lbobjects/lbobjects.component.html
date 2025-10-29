@@ -1,0 +1,116 @@
+<!--Main template-->
+<ng-template #layout>
+    <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+         fxLayoutGap="2%">
+        <div class="flex-item" fxFlex="100%">
+            <mat-input-container>
+                <input matInput placeholder="search" input [(ngModel)]="search">
+            </mat-input-container>
+            <button mat-icon-button (click)="SearchItem()"
+                matTooltip="Search">
+            <mat-icon>remove_red_eye</mat-icon>
+            </button>
+            <a mat-icon-button (click)="prev()"
+                matTooltip="Previous"
+                matTooltipPosition="before">
+                <mat-icon>fast_rewind</mat-icon>
+            </a>
+                <a mat-icon-button (click)="next()"
+                matTooltip="Next"
+                matTooltipPosition="after">
+                <mat-icon>fast_forward</mat-icon>
+            </a>
+        </div>
+    </div>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+    <span class="item-spacer"></span>
+         <ng-container [ngSwitch]="objectSelected">
+            <div *ngSwitchCase="'virtuals'">
+                <mat-list *ngFor="let vs of virtuals | async">
+                        <h4 mat-line><b>{{vs.virtual|common|awsvspipe}}</b></h4>
+                        <p mat-line>IP: {{vs.ip|isNull}}:{{vs.port|isNull}}</p>
+                        <p mat-line><b>{{vs.hostname}}</b></p>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('virtual', vs.virtual, vs.hostname,vs.vendor,vs.vs_type)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>
+                </mat-list>
+            </div>
+            <div *ngSwitchCase="'profiles'">
+                <mat-list *ngFor="let p of profiles | async">
+                        <h4 mat-line><b>{{p.profile}}</b></h4>
+                        <p mat-line><b>[{{p.hostname}}]</b></p>
+                </mat-list>
+            </div>
+            <div *ngSwitchCase="'irules'">
+                <mat-list *ngFor="let i of irules | async">
+                        <h4 mat-line><b>{{i.irule_name}}</b></h4>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('irule', i.irule_name, i.hostname)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>
+                </mat-list>
+            </div>
+            <div *ngSwitchCase="'pools'">
+                <mat-list *ngFor="let p of pools | async">
+                        <h4 mat-line><b>{{p.pool|common}}</b></h4>
+                        <p mat-line><b>{{p.hostname}}</b></p>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('pool', p.pool, p.hostname,p.vendor,p.type)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>
+                </mat-list>
+            </div>
+            <div *ngSwitchCase="'nodes'">
+                <mat-list *ngFor="let n of nodes | async">
+                        <h4 mat-line><b>{{n.ip}}</b></h4>
+                        <p mat-line><b>{{n.hostname}}</b></p>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('nodes', n.ip, n.hostname,n.vendor,n.type)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>
+                </mat-list>
+            </div>
+            <div *ngSwitchCase="'certificates'">
+                <mat-list *ngFor="let n of certificates | async">
+                        <h4 mat-line><b>{{n.subject_common_name}}</b></h4>
+                        <h4 mat-line><b>{{n.file_name}}</b></h4>
+                        <p mat-line><b>{{n.hostname}}</b></p>
+                        <p mat-line>
+                            <button mat-icon-button
+                                    (click)="openDialog('certificate', n.file_name, n.hostname,n.vendor,n.type)"
+                                    matTooltip="Details">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </p>
+                </mat-list>
+            </div>
+        </ng-container>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'LB objects ('+title+')'"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<ng-container [ngBusy]=busy>
+    <app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+</ng-container>
+<!--<router-outlet></router-outlet>-->
+

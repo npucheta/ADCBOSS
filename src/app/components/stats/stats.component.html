@@ -1,0 +1,70 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <div class="flex-container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
+             fxLayoutGap="5%">
+            <div class="flex-item" fxFlex="30%">
+                <mat-form-field>
+                    <mat-select class="input-full-width" placeholder="Please select a device"
+                                [(ngModel)]="sourcedevice" name="hostname"
+                                (change)="GetStats()">
+                        <mat-option *ngFor="let device of lbdevices | async" [value]="device">
+                            {{device.hostname}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="flex-item" fxFlex="25%">
+                <mat-checkbox name="isLB" color="primary" [(ngModel)]="isLB">
+                    LB/LTM Module Statistics
+                </mat-checkbox>
+            </div>
+            <div class="flex-item" fxFlex="45%">
+                <mat-checkbox name="isGSLB" color="primary" [(ngModel)]="isGSLB">
+                    GSLB/GTM Module Statistics
+                </mat-checkbox>
+            </div>
+        </div>
+        <div class="flex-item">
+            <mat-list>
+                <mat-list-item *ngFor="let vs of stats | async">
+                    <mat-icon mat-list-avatar>developer_board</mat-icon>
+                    <h4 mat-line>{{vs.virtual}}</h4>
+                    <p mat-line>counter high:{{vs.counter_high_current}} - counter
+                        low:{{vs.counter_low_current}}</p>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <div class="flex-item">
+            <mat-list>
+                <mat-list-item *ngFor="let wideip of gslbstats | async">
+                    <mat-icon mat-list-avatar>developer_board</mat-icon>
+                    <h4 mat-line>{{wideip.wideip}}</h4>
+                    <p mat-line>counter high:{{wideip.counter_high_current}} - counter
+                        low:{{wideip.counter_low_current}}</p>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </ng-template>
+    <ng-template #cardActionTpl>
+        <div class="flex-item" fxFlex>
+            <button mat-mini-fab color="warn" (click)="RefreshStats(sourcedevice)" [disabled]="!anySelected()"
+                    matTooltip="Refresh Statistics From Devices">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'Statistics'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>
+

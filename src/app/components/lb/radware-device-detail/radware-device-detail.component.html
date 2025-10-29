@@ -1,0 +1,154 @@
+<mat-toolbar color="warm">
+    <mat-toolbar-row>
+        <button mat-icon-button [matMenuTriggerFor]="menuDevicesLB">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-input-container>
+            <input matInput placeholder="search" input [(ngModel)]="search">
+        </mat-input-container>
+        <button mat-icon-button (click)="SearchItem()"
+            matTooltip="Search">
+        <mat-icon>remove_red_eye</mat-icon>
+        </button>
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+        <mat-menu #menuDevicesLB="matMenu">
+            <div *ngFor="let option of options">
+                <div *ngIf="1 == option.status">
+                    <button mat-menu-item (click)="changeOption(option.name)">{{option.value}}</button>
+                </div>
+            </div>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" class="device-detail-layout-container">
+    <div class="flex-item" fxFlex="95%" fxFlexAlign="center center">
+        <span class="item-spacer"></span>
+
+        <mat-card>
+            <mat-card-content>
+                
+                <mat-list>
+                    <div [ngBusy]="busy" [ngSwitch]="objectSelected">
+                        <div *ngSwitchCase="'virtuals'">
+                            <h3 mat-subheader>Virtuals </h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let v of virtuals | async">
+                                    <h4 mat-line><b>{{v.VirtServerIndex}}</b></h4>
+                                    <p mat-line>{{v.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('virtuals', v.VirtServerIndex,v.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'virtualservices'">
+                            <h3 mat-subheader>Virtual Services</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let v of virtualservices | async">
+                                    <h4 mat-line><b>{{v.ServIndex}}</b></h4>
+                                     <p mat-line>{{v.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('virtualservices', v.ServIndex, v.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'servergroups'">
+                            <h3 mat-subheader>Server Groups</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let s of servergroups | async">
+                                    <!--<p mat-line><a [routerLink]="['/node', n.ip,n.hostname]">{{n.ip}}</a></p>-->
+                                    <h4 mat-line><b>{{s.Index}}</b></h4>
+                                    <p mat-line>{{s.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button (click)="openDialog('servergroups', s.Index,s.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+
+                        <div *ngSwitchCase="'realservers'">
+                            <h3 mat-subheader>Real Servers</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let r of realservers | async">
+                                <!--<div *ngIf="isSearchItem(m.monitor_name,objectToSearch)">-->
+                                <!--<p mat-line><a [routerLink]="['/monitor', m.monitor_name,m.hostname]">{{m.monitor_name}}</a></p>-->
+                                    <h4 mat-line><b>{{r.Index}}</b></h4>
+                                    <p mat-line>{{r.hostname | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button
+                                                (click)="openDialog('realservers',r.Index, r.hostname)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                            </mat-list>
+                        </div>
+                        <!--TODO replicate F5 profiles (different profiles type)
+                        <div *ngSwitchCase="'classes'">
+                            <h3 mat-subheader>Profiles</h3>
+                            <mat-divider></mat-divider>
+                            <mat-list *ngFor="let p of profiles | async">
+                                <mat-list-item *ngIf="isSearchItem(t.TargetGroupName,objectToSearch)">
+                                    <h4 mat-line><b>{{t.TargetGroupName}}</b></h4>
+                                    <p mat-line>{{t.TargetGroupName | lowercase}}</p>
+                                    <p mat-line>
+                                        <button mat-icon-button
+                                                (click)="openDialog('targetgroups', t.TargetGroupName,t.TargetGroupArn)"
+                                                matTooltip="Details">
+                                            <mat-icon>remove_red_eye</mat-icon>
+                                        </button>
+                                    </p>
+                                </mat-list-item>
+                            </mat-list>
+                        </div>-->
+
+                        <div *ngSwitchCase="'device'">
+                            <div *ngIf="null != device">
+                                <h3 mat-subheader>Device details</h3>
+                                <mat-divider></mat-divider>
+                                <mat-list-item *ngIf="device.hostname">
+                                    <p mat-line>Hostname: <b>{{device.hostname}}</b></p>
+                                    <p mat-line>MGMT IP: <b>{{device.ip}}</b></p>
+                                    <p mat-line>Version: <b>{{device.version}}</b></p>
+                                    <p mat-line>Get configuration: <b>{{device.get_configuration}}</b></p>
+                                    <p mat-line>Configuration status: <b>{{device.config_status}}</b></p>
+                                    <p mat-line>Migration source: <b>{{device.is_source_for_migration}}</b></p>
+                                    <p mat-line>Migration target: <b>{{device.is_target_for_migration}}</b></p>
+                                </mat-list-item>
+                            </div>
+                        </div>
+
+                        <div *ngSwitchDefault>
+                            <h3>Select a option</h3>
+                        </div>
+                    </div>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+        <br/><br/><br/>
+    </div>
+</div>
+<!--</div>
+</mat-card-content>
+</mat-card>
+</div>
+</div>-->

@@ -1,0 +1,65 @@
+<!--Main template-->
+<ng-template #layout>
+    <ng-template #cardHeadButtonTpl>
+        <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Advanced Configuration"
+                matTooltipPosition="before">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </ng-template>
+
+    <!--templates-->
+    <ng-template #cardPoolTpl>
+        <ng-container *ngFor="let p of pool | async">
+            <mat-toolbar color="warn">
+                <app-custom-table [title]="p.hostname" [type]="'head'"></app-custom-table>
+                <span class="item-spacer"></span>
+                  <a mat-icon-button (click)="appMapping(p.pool,p.hostname)" matTooltip="Application Mapping"
+                   matTooltipPosition="before">
+                    <mat-icon>insert_chart</mat-icon>
+                </a>
+            </mat-toolbar>
+             <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <ng-container *ngFor="let key of objectKeys(p); let index=index">
+                        <ng-container *ngIf="index < 5 || !isDialog">
+                            <tr>
+                                <td class="active table-title">{{key}}</td>
+                                <td>{{p[key]}}</td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </div>
+        </ng-container>
+    </ng-template>
+
+    <ng-template #cardPoolMemberTpl>
+        <ng-container *ngFor="let m of poolmembers | async">
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <tr>
+                        <td>{{m.ip}}:{{m.port}}</td>
+                    </tr>
+                </table>
+            </div>
+        </ng-container>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="title"
+                     [hasButton]=isDialog
+                     [headButtonTpl]="cardHeadButtonTpl"
+                     [bodyTpl]="cardPoolTpl">
+    </app-custom-card>
+
+    <ng-container *ngIf="!isDialog">
+        <app-custom-card [title]="'Pool members'"
+                         [bodyTpl]="cardPoolMemberTpl">
+        </app-custom-card>
+    </ng-container>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>
+

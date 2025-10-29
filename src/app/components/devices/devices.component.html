@@ -1,0 +1,159 @@
+<mat-sidenav-container class="devices-container" (backdropClick)="toggleMe(sNavDetailDevice)">
+    <mat-sidenav #sNavDetailDevice class="devices-sidenav" align="end">
+        <div [hidden]="'lb' != typeDevice">
+            <app-device [device]="device" [nav]="sNavDetailDevice"></app-device>
+        </div>
+        <div [hidden]="'gslb' != typeDevice">
+            <app-gslbdevice-detail [device]="device"></app-gslbdevice-detail>
+        </div>
+        <div [hidden]="'aws-elb' != typeDevice">
+            <app-aws-device [device]="device"></app-aws-device>
+        </div>
+        <div [hidden]="'citrix-netscaler' != typeDevice">
+            <app-netscaler-device [device]="device"></app-netscaler-device>
+        </div>
+        <div [hidden]="'Netscaler' != typeDevice">
+            <app-netscaler-device [device]="device"></app-netscaler-device>
+        </div>
+        <div [hidden]="'radware-alteon' != typeDevice">
+            <app-radware-device [device]="device"></app-radware-device>
+        </div>
+        <div [hidden]="'a10' != typeDevice">
+            <app-a10-device-detail [device]="device"></app-a10-device-detail>
+        </div>
+    </mat-sidenav>
+
+    <!--Main template-->
+    <ng-template #layout>
+        <ng-container *ngIf="'list'==objectSelected">
+            <ng-template #listBodyCardTpl>
+                <div fxLayout="column" fxLayout.xs="column" fxLayoutAlign="center center"
+                     fxLayoutAlign.xs="center">
+                    <div class="flex-item">
+                        <mat-list>
+                            <mat-list-item *ngFor="let device of lbdevices | async">
+                                <mat-icon mat-list-avatar>developer_board</mat-icon>
+                                <span mat-line>
+                                    <!--<app-icon-svg [icon]="'cisco'" [size]="48"></app-icon-svg>-->
+                                    <app-icon-svg [icon]="device.vendor" [size]="48"></app-icon-svg>
+                                    <span class="mat-subheading-2">{{device.hostname}}</span>
+                                </span>
+                                <p mat-line><span class="mat-subheading-1">Vendor: {{device.vendor|isNull}}</span></p>
+                                <p mat-line><span class="mat-subheading-1">Modules: {{device.modules|isNull}}</span></p>
+                                <p mat-line>
+                                    <span class="mat-subheading-1">config status:{{device.config_status|isNull|lowercase}}</span>
+                                </p>
+                                <p mat-line>
+                                    <button mat-icon-button
+                                            matTooltip="Details"
+                                            (click)="openDetailslb(device, sNavDetailDevice)">
+                                        <mat-icon>list</mat-icon>
+                                    </button>  <!--
+                                    <button *ngIf="device.modules && device.modules.includes('ELB')" mat-icon-button
+                                            matTooltip="AWS ELB Details"
+                                            (click)="openDetails('ELB', device, sNavDetailDevice)">
+                                        <mat-icon>list</mat-icon>
+                                    </button>
+
+                                    <button *ngIf="device.modules && device.modules.includes('LTM')" mat-icon-button
+                                            matTooltip="LB Details"
+                                            (click)="openDetails('lb', device, sNavDetailDevice)">
+                                        <mat-icon>list</mat-icon>
+                                    </button>
+                                    <button *ngIf="device.modules && device.modules.includes('GTM')" mat-icon-button
+                                            matTooltip="GSLB Details"
+                                            (click)="openDetails('gslb', device, sNavDetailDevice)">
+                                        <mat-icon>list</mat-icon>
+                                    </button>-->
+                                    <button mat-icon-button matTooltip="Dump configuration"
+                                            (click)="dumpConfig(device)">
+                                        <mat-icon>cloud_download</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Delete"
+                                            (click)="deleteDevice(device)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </p>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+                </div>
+            </ng-template>
+            <app-custom-card [title]="'LB devices'"
+                             [bodyTpl]="listBodyCardTpl">
+            </app-custom-card>
+        </ng-container>
+        <ng-container *ngIf="'add'==objectSelected">
+            <!--card body-->
+            <ng-template #addCardBodyTpl>
+                <ng-container [ngSwitch]="deviceSelected">
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[0]">
+                        <app-device-f5 [parent]="self"
+                                       [title]="'Device Add F5'"
+                                       [deviceTypes]="deviceTypes"
+                                       [deviceType]="deviceSelected">
+                        </app-device-f5>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[1]">
+                        <app-device-citrix-netscaler [parent]="self"
+                                                     [title]="'Device Add CITRIX Netscaler'"
+                                                     [deviceType]="deviceSelected">
+                        </app-device-citrix-netscaler>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[2]">
+                        <app-device-radware-alteon [parent]="self"
+                                                   [title]="'Device Add Radware Alteon'"
+                                                   [deviceType]="deviceSelected">
+                        </app-device-radware-alteon>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[3]">
+                        <app-device-cisco-css [parent]="self"
+                                              [title]="'Device Add Cisco CSS'"
+                                              [deviceType]="deviceSelected">
+                        </app-device-cisco-css>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[4]">
+                        <app-device-aws-elb [parent]="self"
+                                            [title]="'Device Add AWS ELB'"
+                                            [deviceType]="deviceSelected">
+                        </app-device-aws-elb>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="EXISTING_DEVICES[5]">
+                        <app-device-a10 [parent]="self"
+                                            [title]="'Device Add A10 Thunder'"
+                                            [deviceType]="deviceSelected">
+                        </app-device-a10>
+                    </ng-template>
+                </ng-container>
+            </ng-template>
+            <!--//-->
+            <!--card actions-->
+            <ng-template #cardActionTpl>
+                <div class="flex-item" fxFlex>
+                    <button type="submit" mat-raised-button color="primary" (click)="save(deviceSelected)"
+                            [disabled]="wait">Add
+                    </button>
+                </div>
+        <!--        <div class="flex-item" fxFlex>
+                    <button type="reset" mat-raised-button color="accent" (click)="reset(deviceSelected)">Reset
+                    </button>
+                </div>-->
+            </ng-template>
+            <!--//-->
+            <!--here display card -->
+            <app-custom-card [title]="(''!=title)?(title):('Add Device')"
+                             [bodyTpl]="addCardBodyTpl"
+                             [hasAction]="true"
+                             [actionTpl]="cardActionTpl">
+            </app-custom-card>
+            <!--//-->
+        </ng-container>
+    </ng-template>
+    <!--//-->
+
+    <!--Here display all content of main layout-->
+    <ng-container [ngBusy]=busy>
+        <app-custom-layout [bodyTpl]="layout" [isDialog]="isDialog"></app-custom-layout>
+    </ng-container>
+    <!--//-->
+</mat-sidenav-container>

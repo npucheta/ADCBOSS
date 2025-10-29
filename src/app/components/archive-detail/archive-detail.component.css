@@ -1,0 +1,22 @@
+p.link {
+    color: #03a9f4;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.devices-container {
+    width: 100%;
+    height: 100%;
+}
+
+.compare-sidenav {
+    width: 100%;
+}
+
+.archive-detail-layout-container {
+    padding-top: 5%;
+}
+
+.highlight {
+    background-color: yellow;
+}

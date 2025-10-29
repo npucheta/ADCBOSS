@@ -1,0 +1,175 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-container>
+        <ng-template #cardBodyTpl>
+            <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                 fxLayoutAlign="space-around center" fxLayoutGap="10px">
+                <div class="flex-item" fxFlex>
+                    <mat-form-field class="input-full-width">
+                        <input matInput #inputFocus matAutofocus placeholder="Object Name or IP Address"
+                               input [(ngModel)]="objectToSearch" autocomplete="off"
+                               autofocus>
+                    </mat-form-field>
+                </div>
+                <div class="flex-item" fxFlex="15%" align="start">
+                    <mat-checkbox color="primary" [(ngModel)]="checkedSearchVirtualServers">Virtual
+                        Servers
+                    </mat-checkbox>
+                </div>
+                <div class="flex-item" fxFlex="15%" align="start">
+                    <mat-checkbox color="primary" [(ngModel)]="checkedSearchWideIPs">Wideips</mat-checkbox>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #cardActionTpl>
+            <div class="flex-item">
+                <button mat-mini-fab color="warn" (click)="search(true)"
+                        matTooltip="Search">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+    </ng-container>
+    <!--//-->
+    <!--Virtual-->
+    <!--card actions-->
+
+    <ng-template #cardBodyVirtualTpl>
+        <mat-list *ngFor='let v of virtuals; let last = last'>
+            <mat-list-item>
+                <h4 mat-line><b>Hostname</b></h4>
+                <p mat-line>{{v.hostname}}</p>
+                <h4 mat-line><b>Virtual</b></h4>
+                <mat-icon mat-list-avatar>developer_board</mat-icon>
+                <p mat-line>{{v.virtual|awsvspipe}}</p>
+                <p mat-line>VIP (IP:Port): <span>{{v.ip}}:{{v.port}}</span></p>
+             </mat-list-item>
+
+             <mat-list-item *ngIf='v.pool'>
+                <mat-icon mat-list-avatar>device_hub</mat-icon>
+                <h4 mat-line><b>Pools</b></h4>
+            </mat-list-item>
+
+            <ng-container mat-line *ngFor='let p of v.pool'>
+                <mat-list-item *ngIf='p.pool_name'>
+                    <mat-icon mat-list-avatar>device_hub</mat-icon>
+                    <p mat-line>{{p.pool_name}}</p>
+                    <p mat-line>LB Pool members:</p>
+                    <ng-container mat-line *ngFor='let m of p.members'>
+                        <p mat-line>{{m}}</p>
+                    </ng-container>
+                </mat-list-item>
+            </ng-container>
+            <mat-list-item>
+                <p mat-line style="text-align: end; vertical-align: bottom">
+                    <a mat-icon-button (click)="openChart(v, 'v')" matTooltip="Application Mapping"
+                       matTooltipPosition="before">
+                        <mat-icon>insert_chart</mat-icon>
+                    </a>
+                </p>
+            </mat-list-item>
+            <ng-container *ngIf="!last">
+                <mat-divider></mat-divider>
+            </ng-container>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+
+    <!--Wideips-->
+    <!--card actions-->
+    <ng-template #cardBodyWideTpl>
+        <mat-list *ngFor='let w of wideips; let last = last'>
+            <mat-list-item>
+                <h4 mat-line><b>Hostname</b></h4>
+                <p mat-line>{{w.hostname}}</p>
+                <mat-icon mat-list-avatar>developer_board</mat-icon>
+                <h4 mat-line><b>Wideip</b></h4>
+                <p mat-line>{{w.wideip}}</p>
+            </mat-list-item>
+            <ng-container *ngFor='let m of w.gslb_pools'>
+                <mat-list-item>
+                    <mat-icon mat-list-avatar>device_hub</mat-icon>
+                    <h4 mat-line><b>GSLB Pool</b></h4>
+                    <p mat-line>{{m.gslb_pool}}</p>
+                </mat-list-item>
+                <ng-container *ngFor='let v of m.virtuals'>
+                    <ng-container *ngIf="v">
+                        <mat-list-item>
+                            <mat-icon mat-list-avatar>dns</mat-icon>
+                            <h4 mat-line><b>Virtual</b></h4>
+                            <p mat-line>{{v.virtual}}</p>
+                            <p mat-line>IP: {{v.ip}}:{{v.port}}</p>
+                        </mat-list-item>
+                        <ng-container *ngIf="v.pool">
+                            <ng-container *ngIf="v.pool.pool_name">
+                                <mat-list-item>
+                                    <mat-icon mat-list-avatar>device_hub</mat-icon>
+                                    <h4 mat-line><b>Pool</b></h4>
+                                    <p mat-line> {{v.pool.pool_name}}</p>
+                                </mat-list-item>
+                                <ng-container *ngFor='let p of v.pool.members'>
+                                    <mat-list-item>
+                                        <mat-icon mat-list-avatar>device_hub</mat-icon>
+                                        <h4 mat-line><b>Pool member</b></h4>
+                                        <p mat-line>{{p}}</p>
+                                    </mat-list-item>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+            <mat-list-item>
+                <p mat-line style="text-align: end; vertical-align: bottom">
+                    <a mat-icon-button (click)="openChart(w, 'w')" matTooltip="chart">
+                        <mat-icon>insert_chart</mat-icon>
+                    </a>
+                </p>
+            </mat-list-item>
+            <ng-container *ngIf="!last">
+                <mat-divider></mat-divider>
+            </ng-container>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+
+    <!--here display card -->
+    <app-custom-card [title]="'Search'"
+                     [bodyTpl]="cardBodyTpl"
+                     [hasAction]="true"
+                     [actionTpl]="cardActionTpl">
+    </app-custom-card>
+    <!--//-->
+
+    <ng-container *ngIf="(virtuals.length > 0 || wideips.length > 0) && (checkedSearchVirtualServers || checkedSearchWideIPs) ">
+        <a mat-icon-button (click)="prev()"
+            matTooltip="Previous"
+            matTooltipPosition="before">
+            <mat-icon>fast_rewind</mat-icon>
+        </a>
+            <a mat-icon-button (click)="next()"
+            matTooltip="Next"
+            matTooltipPosition="after">
+            <mat-icon>fast_forward</mat-icon>
+        </a>
+        <!--here display card -->
+        <ng-container *ngIf="(virtuals.length > 0) && checkedSearchVirtualServers">
+            <app-custom-card [title]="'Virtual Servers'"
+                             [bodyTpl]="cardBodyVirtualTpl">
+            </app-custom-card>
+        </ng-container>
+        <!--//-->
+
+        <!--here display card -->
+        <ng-container *ngIf="(wideips.length > 0) && checkedSearchWideIPs">
+            <app-custom-card [title]="'WideIPS'"
+                             [bodyTpl]="cardBodyWideTpl">
+            </app-custom-card>
+        </ng-container>
+        <!--//-->
+    </ng-container>
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

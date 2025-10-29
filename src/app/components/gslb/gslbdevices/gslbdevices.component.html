@@ -1,0 +1,26 @@
+<!--Main template-->
+<ng-template #layout>
+    <!--card actions-->
+    <ng-template #cardBodyTpl>
+        <mat-list>
+            <mat-list-item *ngFor="let device of devices | async" (click)="onSelect(device)">
+                <h4 mat-line>{{device.hostname}}</h4>
+                <div *ngIf="selectedDevice">
+                    <h4 mat-line> {{selectedDevice.hostname}}</h4>
+                    <p mat-line>
+                        <button (click)="gotoDetail()">View Details</button>
+                    </p>
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </ng-template>
+    <!--//-->
+    <!--here display card -->
+    <app-custom-card [title]="'My devices'"
+                     [bodyTpl]="cardBodyTpl">
+    </app-custom-card>
+    <!--//-->
+</ng-template>
+
+<!--Here display all content of main layout-->
+<app-custom-layout [bodyTpl]="layout"></app-custom-layout>

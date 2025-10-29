@@ -1,0 +1,63 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center stretch"
+     fxLayoutAlign.xs="center" fxLayoutWrap="wrap" [ngStyle]="{'margin-top': (!isDialog)?'5%':0}">
+    <div class="flex-item" fxFlex="{{size}}" fxFlexAlign="center center">
+        <mat-card style="padding: 0; margin: 0;">
+            <mat-card-content>
+                <mat-toolbar color="warm">
+                    <div class="flex-item" fxFlex>
+                        <mat-card-subtitle>{{miniTitle}}</mat-card-subtitle>
+                    </div>
+                    <mat-toolbar-row *ngIf="isDialog">
+                        <div class="flex-item" fxFlex style="text-align: end; vertical-align: bottom">
+                            <button mat-icon-button [mat-dialog-close]="true" (click)="goSelf()" matTooltip="Advanced Configuration"
+                                    matTooltipPosition="before">
+                                <mat-icon>tune</mat-icon>
+                            </button>
+                        </div>
+                    </mat-toolbar-row>
+                </mat-toolbar>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card [ngStyle]="{'margin-bottom': (!isDialog)?'5%':0}">
+            <mat-card-content>
+                <ng-container *ngFor="let s of virtual| async">
+                    <p mat-line style="text-align: end; vertical-align: bottom">
+                        <a mat-icon-button (click)="appMapping(v.ip,v.port)" matTooltip="Application Mapping"
+                           matTooltipPosition="before">
+                            <mat-icon>insert_chart</mat-icon>
+                        </a>
+                    </p>
+                   <div class="table-responsive">
+                    <table class="table table-condensed table-hover">
+                     <div *ngFor="let key of objectKeys(s); let i=index">
+                       <div *ngIf="isDialog && i<10">
+                          <tr>
+                                <td class="active" style="text-align: center; width: 15%">{{key}}: </td>
+                                <td>{{s[key]}}</td>
+                          </tr>
+                         </div>   
+                        <div *ngIf="!isDialog">
+                          <tr>
+                                <td class="active" style="text-align: center; width: 15%">{{key}}: </td>
+                                <td>{{s[key]}}</td>
+                          </tr>
+                       </div>
+                       </div>
+                    </table>
+                   </div>
+                     <div *ngIf="!isDialog">
+                             <tr>
+                                <th colspan="3" style="text-align: center; width: 15%">Profiles</th>
+                            </tr>
+                              <div *ngIf="s.netprofile"><tr><td>NET Profile: <a [routerLink]="['/netscaler-netprofile', s.netprofile,hostname]">{{s.netprofile}}</a></td> </tr></div>
+                              <div *ngIf="s.tcpprofilename"><tr><td>TCP Profile: <a [routerLink]="['/netscaler-tcpprofile', s.tcpprofilename,hostname]">{{s.tcpprofilename}}</a></td> </tr></div>
+                              <div *ngIf="s.httpprofilename"><tr><td>HTTP Profile: <a [routerLink]="['/netscaler-httpprofile', s.httpprofilename,hostname]">{{s.httpprofilename}}</a></td> </tr></div>
+                              <div *ngIf="s.dbprofilename"><tr><td>DB Profile: <a [routerLink]="['/netscaler-dbprofile', s.dbprofilename,hostname]">{{s.dbprofilename}}</a></td> </tr>  </div>
+
+                    </div>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
