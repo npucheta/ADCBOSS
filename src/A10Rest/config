@@ -1,0 +1,3 @@
+curl -k GET https://a10/axapi/v3/slb \
+-H "Content-Type:application/json" \
+-H "Authorization: A10 a217af92a5fcd95a2935b5265b6589"

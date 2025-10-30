@@ -1,0 +1,8 @@
+curl -k https://a10/axapi/v3/auth \
+-H "Content-Type:application/json" \
+-d '{
+    "credentials": {
+        "username": "admin",
+        "password": "a10"
+    }
+}'
